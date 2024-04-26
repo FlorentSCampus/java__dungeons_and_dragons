@@ -3,19 +3,17 @@ package game;
 import menu.Menu;
 
 public class Game {
-    menu.Menu menu = new Menu();
+    Menu menu = new Menu();
 
-    private boolean newGame;
+    private String value;
 
     public void launch() {
-        newGame = menu.newGame();
-    }
+        value = menu.newGame();
 
-    //
-
-    // menu character creation
-
-    public void create() {
-        System.out.println(newGame);
+        if (value.equals("NG")) {
+            menu.selection(value);
+        } else {
+            System.exit(0);
+        }
     }
 }
