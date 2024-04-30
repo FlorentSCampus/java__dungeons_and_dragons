@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class Menu {
     Scanner scanner = new Scanner(System.in);
 
-    private int menuIndex = 0;
     private String userValue;
+    private int menuIndex = 0;
 
     public Menu() {
     }
@@ -16,9 +16,7 @@ public class Menu {
         return setPlayersNb();
     }
 
-    public Player create() {
-        Player player = new Player();
-
+    public Player create(Player player) {
         while (true) {
             switch (menuIndex) {
                 case 1:
@@ -70,12 +68,22 @@ public class Menu {
         System.out.println("\n\n" + "CHOOSE PLAYERS NUMBER" + "\n");
         System.out.println("[ENTER] 1 by default");
 
-        userValue = scanner.nextLine().toUpperCase();
+        while (true) {
+            try {
+                userValue = scanner.nextLine().toUpperCase();
 
-        if (userValue.equals("")) {
-            return 1;
-        } else {
-            return Integer.valueOf(userValue);
+                if (userValue.equals("")) {
+                    return 1;
+                }
+
+                if (Integer.valueOf(userValue) instanceof Integer) {
+                    return Integer.valueOf(userValue);
+                }
+
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("Please enter a number");
+            }
         }
     }
 
@@ -96,7 +104,7 @@ public class Menu {
 
     public int setJob(Player player, boolean isModify) {
         System.out.println("\n\n" + "JOB SELECTION" + "\n");
-        System.out.println("Please choose a job between [WARRIOR] or [WIZARD] :" + "\n" + "Job Info [J]");
+        System.out.println("Please choose a job between WARRIOR or WIZARD :" + "\n" + "Job Info [J]");
 
         while (true) {
             try {
@@ -119,15 +127,16 @@ public class Menu {
                 throw new Exception();
             } catch (Exception e) {
                 System.out.println(
-                        "Please enter a valid data :" + "\n" + "[WARRIOR] or [WIZARD]" + "\n" + "Job Info [J]");
+                        "Please enter a valid data :" + "\n" + "WARRIOR or WIZARD" + "\n" + "Job Info [J]");
             }
         }
     }
 
     public int jobInfo() {
+        // Attribute attribute = new Attribute();
         System.out.println("\n\n" + "JOB STAT" + "\n");
-        System.out.println("WARRIOR stat :" + "\n"); /// get job info
-        System.out.println("WIZARD stat :" + "\n"); /// get job info
+        /// get job info
+        /// get job info
         System.out.println("Back [B]");
 
         while (true) {
@@ -147,7 +156,9 @@ public class Menu {
 
     public int modify(Player player) {
         System.out.println("\n\n" + "MODIFY INFO" + "\n");
-        System.out.println("Player Name [P]" + "\n" + "Job [J]" + "\n" + "Back [B]");
+        System.out.println("PLAYER NAME: " + player.getName());
+        System.out.println("JOB: " + player.getJob());
+        System.out.println("\n\n" + "Player Name [P]" + "\n" + "Job [J]" + "\n" + "Back [B]");
 
         while (true) {
             try {
@@ -169,7 +180,8 @@ public class Menu {
 
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("Please enter a valid data :" + "\n" + "Modify [M]" + "\n" + "Ok [O]");
+                System.out.println("Please enter a valid data :" + "\n" + "Player Name [P]" + "\n" + "Job [J]" + "\n"
+                        + "Back [B]");
             }
         }
     }
@@ -178,7 +190,7 @@ public class Menu {
         System.out.println("\n\n" + "CONFIRMATION" + "\n");
         System.out.println("PLAYER NAME: " + player.getName());
         System.out.println("JOB: " + player.getJob());
-        System.out.println("\n" + "Modify [M]" + "\n" + "Ok [O]");
+        System.out.println("\n\n" + "Modify [M]" + "\n" + "Ok [O]");
 
         while (true) {
             try {

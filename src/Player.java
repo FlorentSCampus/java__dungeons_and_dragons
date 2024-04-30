@@ -7,11 +7,6 @@ public class Player {
     public Player() {
     }
 
-    public Player(String Name, String job) {
-        this.playerName = Name;
-        this.playerJob = job;
-    }
-
     public void setName(String name) {
         playerName = name;
     }
