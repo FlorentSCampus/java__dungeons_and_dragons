@@ -17,19 +17,19 @@ public class OffEquipment {
         this.attack = offEquipments[2];
     }
 
-    public int[] getWarriorBaseOffEquipments() {
+    public Object[] getWarriorBaseOffEquipments() {
         return warriorBaseOffEquipments;
     }
 
-    public int[] getWizardBaseOffEquipments() {
+    public Object[] getWizardBaseOffEquipments() {
         return wizardBaseOffEquipments;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 

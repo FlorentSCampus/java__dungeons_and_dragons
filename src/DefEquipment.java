@@ -17,19 +17,19 @@ public class DefEquipment {
         this.defense = defEquipments[2];
     }
 
-    public int[] getWarriorBaseDefEquipments() {
+    public Object[] getWarriorBaseDefEquipments() {
         return warriorBaseDefEquipments;
     }
 
-    public int[] getWizardBaseDefEquipments() {
+    public Object[] getWizardBaseDefEquipments() {
         return wizardBaseDefEquipments;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
