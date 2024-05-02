@@ -1,19 +1,22 @@
 package src;
 
+import src.job.Warrior;
+import src.job.Wizard;
+
 import java.util.Scanner;
 
 public class Menu {
+    Warrior warrior = new Warrior();
+    Wizard wizard = new Wizard();
+
     Scanner scanner = new Scanner(System.in);
 
     private String userValue;
-    private int menuIndex = 0;
+    private int menuIndex;
 
     public Menu() {
-    }
-
-    public int start() {
-        menuIndex = newGame();
-        return setPlayersNb();
+        this.userValue = "";
+        this.menuIndex = 1;
     }
 
     public Player create(Player player) {
@@ -23,16 +26,16 @@ public class Menu {
                     menuIndex = setPlayerName(player, false);
                     break;
                 case 2:
-                    menuIndex = setJob(player, false);
+                    menuIndex = setPlayerJob(player, false);
                     break;
                 case 3:
                     menuIndex = jobInfo();
                     break;
                 case 4:
-                    menuIndex = modify(player);
+                    menuIndex = modifyPlayerInfo(player);
                     break;
                 case 5:
-                    menuIndex = validation(player);
+                    menuIndex = validationPlayerInfo(player);
                     break;
                 case 6:
                     menuIndex = 1;
@@ -41,30 +44,33 @@ public class Menu {
         }
     }
 
-    public int newGame() {
+    public boolean isNewGame() {
         System.out.println("\n\n" + "WELCOME TO D&D" + "\n");
-        System.out.println("New Game [N]" + "\n" + "Exit [E]");
+        System.out.println("New Game [N]");
+        System.out.println("Exit [E]");
 
         while (true) {
             try {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("N")) {
-                    return 1;
+                    return true;
                 }
 
                 if (userValue.equals("E")) {
-                    System.exit(0);
+                    return false;
                 }
 
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("Please enter a valid data :" + "\n" + "New Game [N]" + "\n" + "Exit [E]");
+                System.out.println("Please enter a valid data:");
+                System.out.println("New Game [N]");
+                System.out.println("Exit [E]");
             }
         }
     }
 
-    public int setPlayersNb() {
+    public int getPlayersCount() {
         System.out.println("\n\n" + "CHOOSE PLAYERS NUMBER" + "\n");
         System.out.println("[ENTER] 1 by default");
 
@@ -89,11 +95,11 @@ public class Menu {
 
     public int setPlayerName(Player player, boolean isModify) {
         System.out.println("\n\n" + "PLAYER NAME" + "\n");
-        System.out.println("Please enter your Player Name :");
+        System.out.println("Please enter your Player Name:");
 
         userValue = scanner.nextLine().toUpperCase();
 
-        player.setName(userValue);
+        player.setPlayerName(userValue);
 
         if (!isModify) {
             return 2;
@@ -102,9 +108,10 @@ public class Menu {
         }
     }
 
-    public int setJob(Player player, boolean isModify) {
+    public int setPlayerJob(Player player, boolean isModify) {
         System.out.println("\n\n" + "JOB SELECTION" + "\n");
-        System.out.println("Please choose a job between WARRIOR or WIZARD :" + "\n" + "Job Info [J]");
+        System.out.println("Please choose a job between WARRIOR or WIZARD:");
+        System.out.println("Job Info [J]");
 
         while (true) {
             try {
@@ -115,7 +122,7 @@ public class Menu {
                 }
 
                 if (userValue.equals("WARRIOR") || userValue.equals("WIZARD")) {
-                    player.setJob(userValue);
+                    player.setPlayerJob(userValue);
 
                     if (!isModify) {
                         return 5;
@@ -126,17 +133,30 @@ public class Menu {
 
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println(
-                        "Please enter a valid data :" + "\n" + "WARRIOR or WIZARD" + "\n" + "Job Info [J]");
+                System.out.println("Please enter a valid data:");
+                System.out.println("WARRIOR or WIZARD");
+                System.out.println("Job Info [J]");
             }
         }
     }
 
     public int jobInfo() {
-        // Attribute attribute = new Attribute();
         System.out.println("\n\n" + "JOB STAT" + "\n");
-        /// get job info
-        /// get job info
+
+        System.out.println(warrior.getPlayerJob());
+        System.out.println("Health: " + warrior.getHealth());
+        System.out.println("Strength: " + warrior.getStrength() + "\n");
+        System.out.println("Offensive Stuff: ");
+        System.out.println("Name: " + warrior.getOffensiveStuff().getName());
+        System.out.println("Attack: " + warrior.getOffensiveStuff().getStat() + "\n\n");
+
+        System.out.println(wizard.getPlayerJob());
+        System.out.println("Health: " + wizard.getHealth());
+        System.out.println("Strength: " + wizard.getStrength() + "\n");
+        System.out.println("Offensive Stuff: ");
+        System.out.println("Name: " + wizard.getOffensiveStuff().getName());
+        System.out.println("Attack: " + wizard.getOffensiveStuff().getStat() + "\n\n");
+
         System.out.println("Back [B]");
 
         while (true) {
@@ -154,10 +174,10 @@ public class Menu {
         }
     }
 
-    public int modify(Player player) {
+    public int modifyPlayerInfo(Player player) {
         System.out.println("\n\n" + "MODIFY INFO" + "\n");
-        System.out.println("PLAYER NAME: " + player.getName());
-        System.out.println("JOB: " + player.getJob());
+        System.out.println("Player Name: " + player.getPlayerName());
+        System.out.println("Job: " + player.getPlayerJob());
         System.out.println("\n\n" + "Player Name [P]" + "\n" + "Job [J]" + "\n" + "Back [B]");
 
         while (true) {
@@ -170,7 +190,7 @@ public class Menu {
                 }
 
                 if (userValue.equals("J")) {
-                    setJob(player, true);
+                    setPlayerJob(player, true);
                     return 4;
                 }
 
@@ -186,10 +206,10 @@ public class Menu {
         }
     }
 
-    public int validation(Player player) {
-        System.out.println("\n\n" + "CONFIRMATION" + "\n");
-        System.out.println("PLAYER NAME: " + player.getName());
-        System.out.println("JOB: " + player.getJob());
+    public int validationPlayerInfo(Player player) {
+        System.out.println("\n\n" + "VALIDATION" + "\n");
+        System.out.println("Player Name: " + player.getPlayerName());
+        System.out.println("Job: " + player.getPlayerJob());
         System.out.println("\n\n" + "Modify [M]" + "\n" + "Ok [O]");
 
         while (true) {
