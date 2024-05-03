@@ -1,9 +1,9 @@
-package src;
+package src.stuff;
 
-public class Stuff {
-    private String category;
-    private String name;
-    private int stat;
+public abstract class Stuff {
+    protected String category;
+    protected String name;
+    protected int stat;
 
     public Stuff() {
         this.category = "";
