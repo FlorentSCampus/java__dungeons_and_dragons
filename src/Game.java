@@ -1,21 +1,44 @@
 package src;
 
+import src.board.Board;
+import src.board.Dice;
+import src.menu.Menu;
 import src.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    Menu menu = new Menu();
+    private Board board;
+    private Dice dice;
+    private Menu menu;
 
-    List<Player> players = new ArrayList<Player>();
+    private int boardCellsCount;
+    private int playerPosition;
+    private boolean isWon;
+    private boolean isNewGame;
+
+    private List<Player> players;
+
+    public Game() {
+        this.board = new Board();
+        this.dice = new Dice();
+        this.menu = new Menu();
+
+        this.boardCellsCount = 64;
+        this.playerPosition = 1;
+        this.isWon = false;
+        this.isNewGame = false;
+
+        this.players = new ArrayList<Player>();
+    }
 
     public void init() {
-        if (menu.isNewGame()) {
-            int playersCount = menu.getPlayersCount();
+        if (menu.getInitMenu().isNewGame()) {
+            int playersCount = menu.getInitMenu().getPlayersCount();
 
             for (int i = 0; i < playersCount; i++) {
-                players.add(menu.create());
+                players.add(menu.getInitMenu().create());
             }
         } else {
             System.exit(0);
@@ -23,9 +46,47 @@ public class Game {
     }
 
     public void launch() {
+        board = new Board(boardCellsCount);
+        board.setBoard();
 
+        while (menu.getGameMenu().isNewGame(isWon)) {
+            while (!isWon) {
+                for (int i = 0; i < 1; i++) { // i < players.size()
+                    menu.getGameMenu().gameStat(dice.getRollValue(), playerPosition);
+                    board.getBoard(playerPosition);
 
-//        board = new Board(boardCellsCount);
+                    if (menu.getGameMenu().rollDice()) {
+                        dice.setRollValue();
+                        playerPosition = playerPosition + dice.getRollValue();
+                    }
+
+                    if (playerPosition > boardCellsCount) {
+                        playerPosition = boardCellsCount - (playerPosition - boardCellsCount);
+                    }
+
+                    if (playerPosition == boardCellsCount) {
+                        menu.getGameMenu().gameStat(dice.getRollValue(), playerPosition);
+                        board.getBoard(playerPosition);
+
+                        isWon = true;
+                    }
+                }
+            }
+
+            menu.getGameMenu().isWon();
+        }
+
+        isWon = false;
+
+        // TO DELETE
+//        players.add(new Warrior("FLORENT", "WARRIOR"));
+//        System.out.println(players.get(0).getPlayerName());
+//        //
+//        dice = new Dice();
+//        dice.setRollValue();
+//        System.out.println(dice.getRollValue());
+
+//        board = new Board(64);
 //        board.setBoard();
 //
 //        int i = 0;
