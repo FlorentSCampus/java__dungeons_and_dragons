@@ -1,7 +1,8 @@
 package src;
 
-import src.job.Warrior;
-import src.job.Wizard;
+import src.player.Player;
+import src.player.job.Warrior;
+import src.player.job.Wizard;
 
 import java.util.Scanner;
 
@@ -14,32 +15,35 @@ public class Menu {
     private String userValue;
     private int menuIndex;
 
+    private String playerName;
+    private String playerJob;
+
     public Menu() {
         this.userValue = "";
         this.menuIndex = 1;
     }
 
-    public Player create(Player player) {
+    public Player create() {
         while (true) {
             switch (menuIndex) {
                 case 1:
-                    menuIndex = setPlayerName(player, false);
+                    menuIndex = setPlayerName(false);
                     break;
                 case 2:
-                    menuIndex = setPlayerJob(player, false);
+                    menuIndex = setPlayerJob(false);
                     break;
                 case 3:
                     menuIndex = jobInfo();
                     break;
                 case 4:
-                    menuIndex = modifyPlayerInfo(player);
+                    menuIndex = modifyPlayerInfo();
                     break;
                 case 5:
-                    menuIndex = validationPlayerInfo(player);
+                    menuIndex = validationPlayerInfo();
                     break;
                 case 6:
                     menuIndex = 1;
-                    return player;
+                    return createPlayer();
             }
         }
     }
@@ -93,13 +97,11 @@ public class Menu {
         }
     }
 
-    public int setPlayerName(Player player, boolean isModify) {
+    public int setPlayerName(boolean isModify) {
         System.out.println("\n\n" + "PLAYER NAME" + "\n");
         System.out.println("Please enter your Player Name:");
 
-        userValue = scanner.nextLine().toUpperCase();
-
-        player.setPlayerName(userValue);
+        playerName = scanner.nextLine().toUpperCase();
 
         if (!isModify) {
             return 2;
@@ -108,7 +110,7 @@ public class Menu {
         }
     }
 
-    public int setPlayerJob(Player player, boolean isModify) {
+    public int setPlayerJob(boolean isModify) {
         System.out.println("\n\n" + "JOB SELECTION" + "\n");
         System.out.println("Please choose a job between WARRIOR or WIZARD:");
         System.out.println("Job Info [J]");
@@ -122,7 +124,7 @@ public class Menu {
                 }
 
                 if (userValue.equals("WARRIOR") || userValue.equals("WIZARD")) {
-                    player.setPlayerJob(userValue);
+                    playerJob = userValue;
 
                     if (!isModify) {
                         return 5;
@@ -143,19 +145,25 @@ public class Menu {
     public int jobInfo() {
         System.out.println("\n\n" + "JOB STAT" + "\n");
 
-        System.out.println(warrior.getPlayerJob());
+        System.out.println("WARRIOR");
         System.out.println("Health: " + warrior.getHealth());
         System.out.println("Strength: " + warrior.getStrength() + "\n");
         System.out.println("Offensive Stuff: ");
         System.out.println("Name: " + warrior.getOffensiveStuff().getName());
-        System.out.println("Attack: " + warrior.getOffensiveStuff().getStat() + "\n\n");
+        System.out.println("Attack: " + warrior.getOffensiveStuff().getStat() + "\n");
+        System.out.println("Defensive Stuff: ");
+        System.out.println("Name: " + warrior.getDefensiveStuff().getName());
+        System.out.println("Defense: " + warrior.getDefensiveStuff().getStat() + "\n\n");
 
-        System.out.println(wizard.getPlayerJob());
+        System.out.println("WIZARD");
         System.out.println("Health: " + wizard.getHealth());
         System.out.println("Strength: " + wizard.getStrength() + "\n");
         System.out.println("Offensive Stuff: ");
         System.out.println("Name: " + wizard.getOffensiveStuff().getName());
-        System.out.println("Attack: " + wizard.getOffensiveStuff().getStat() + "\n\n");
+        System.out.println("Attack: " + wizard.getOffensiveStuff().getStat() + "\n");
+        System.out.println("Defensive Stuff: ");
+        System.out.println("Name: " + wizard.getDefensiveStuff().getName());
+        System.out.println("Defense: " + wizard.getDefensiveStuff().getStat() + "\n\n");
 
         System.out.println("Back [B]");
 
@@ -174,10 +182,10 @@ public class Menu {
         }
     }
 
-    public int modifyPlayerInfo(Player player) {
+    public int modifyPlayerInfo() {
         System.out.println("\n\n" + "MODIFY INFO" + "\n");
-        System.out.println("Player Name: " + player.getPlayerName());
-        System.out.println("Job: " + player.getPlayerJob());
+        System.out.println("Player Name: " + playerName);
+        System.out.println("Job: " + playerJob);
         System.out.println("\n\n" + "Player Name [P]" + "\n" + "Job [J]" + "\n" + "Back [B]");
 
         while (true) {
@@ -185,12 +193,12 @@ public class Menu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("P")) {
-                    setPlayerName(player, true);
+                    setPlayerName(true);
                     return 4;
                 }
 
                 if (userValue.equals("J")) {
-                    setPlayerJob(player, true);
+                    setPlayerJob(true);
                     return 4;
                 }
 
@@ -206,10 +214,10 @@ public class Menu {
         }
     }
 
-    public int validationPlayerInfo(Player player) {
+    public int validationPlayerInfo() {
         System.out.println("\n\n" + "VALIDATION" + "\n");
-        System.out.println("Player Name: " + player.getPlayerName());
-        System.out.println("Job: " + player.getPlayerJob());
+        System.out.println("Player Name: " + playerName);
+        System.out.println("Job: " + playerJob);
         System.out.println("\n\n" + "Modify [M]" + "\n" + "Ok [O]");
 
         while (true) {
@@ -229,5 +237,17 @@ public class Menu {
                 System.out.println("Please enter a valid data :" + "\n" + "Modify [M]" + "\n" + "Ok [O]");
             }
         }
+    }
+
+    public Player createPlayer() {
+        if (playerJob.equals("WARRIOR")) {
+            return new Warrior(playerName, playerJob);
+        }
+
+        if (playerJob.equals("WIZARD")) {
+            return new Wizard(playerName, playerJob);
+        }
+
+        return null;
     }
 }
