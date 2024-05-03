@@ -1,16 +1,16 @@
-package src;
+package src.player;
 
-public class Player {
-    private Stuff stuff;
+import src.stuff.Stuff;
 
+public abstract class Player {
     protected String playerName;
     protected String playerJob;
 
     protected int health;
     protected int strength;
 
-    protected Stuff offensiveStuff;
     protected Stuff defensiveStuff;
+    protected Stuff offensiveStuff;
 
     public Player() {
         this.playerName = "";
@@ -19,15 +19,14 @@ public class Player {
         this.health = 0;
         this.strength = 0;
 
-        this.offensiveStuff = null;
         this.defensiveStuff = null;
+        this.offensiveStuff = null;
     }
 
     public Player(String playerName, String playerJob) {
         this.playerName = playerName;
         this.playerJob = playerJob;
     }
-
 
     public void setPlayerName(String name) {
         this.playerName = name;
@@ -61,19 +60,19 @@ public class Player {
         return strength;
     }
 
-    public void setOffensiveStuff(Stuff offensiveStuff) {
-        this.offensiveStuff = offensiveStuff;
-    }
-
-    public Stuff getOffensiveStuff() {
-        return offensiveStuff;
-    }
-
     public void setDefensiveStuff(Stuff defensiveStuff) {
         this.defensiveStuff = defensiveStuff;
     }
 
     public Stuff getDefensiveStuff() {
         return defensiveStuff;
+    }
+
+    public void setOffensiveStuff(Stuff offensiveStuff) {
+        this.offensiveStuff = offensiveStuff;
+    }
+
+    public Stuff getOffensiveStuff() {
+        return offensiveStuff;
     }
 }
