@@ -4,6 +4,7 @@ import src.job.Warrior;
 import src.job.Wizard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
@@ -15,41 +16,44 @@ public class Game {
     private int playersCount = 1;
 
     public void launch() {
-        menu = new Menu();
-
-        if (menu.isNewGame()) {
-            playersCount = menu.getPlayersCount();
-
-            for (int i = 0; i < playersCount; i++) {
-                player = new Player();
-                player = menu.create(player);
-
-                if (player.getPlayerJob().equals("WARRIOR")) {
-                    players.add(new Warrior(player.getPlayerName(), player.getPlayerJob()));
-                }
-
-                if (player.getPlayerJob().equals("WIZARD")) {
-                    players.add(new Wizard(player.getPlayerName(), player.getPlayerJob()));
-                }
-            }
-        } else {
-            System.exit(0);
-        }
+//        menu = new Menu();
+//
+//        if (menu.isNewGame()) {
+//            playersCount = menu.getPlayersCount();
+//
+//            for (int i = 0; i < playersCount; i++) {
+//                player = new Player();
+//                player = menu.create(player);
+//
+//                if (player.getPlayerJob().equals("WARRIOR")) {
+//                    players.add(new Warrior(player.getPlayerName(), player.getPlayerJob()));
+//                }
+//
+//                if (player.getPlayerJob().equals("WIZARD")) {
+//                    players.add(new Wizard(player.getPlayerName(), player.getPlayerJob()));
+//                }
+//            }
+//        } else {
+//            System.exit(0);
+//        }
 
 //        generate game board !!!
 
+        Board board = new Board();
+        board.fillBoard(64);
+        board.printBoard();
 
 //        display players infos
-        for (int i = 0; i < players.size(); i++) {
-            System.out.println("Name: " + players.get(i).getPlayerName());
-            System.out.println("Job: " + players.get(i).getPlayerJob());
-            System.out.println("Health: " + players.get(i).getHealth());
-            System.out.println("Strength: " + players.get(i).getStrength() + "\n");
-            System.out.println("Offensive Stuff: ");
-            System.out.println("Name: " + players.get(i).getOffensiveStuff().getName());
-            if (players.get(i).getOffensiveStuff().getCategory().equals("SWORD") || players.get(i).getOffensiveStuff().getCategory().equals("SPELL")) {
-                System.out.println("Attack: " + players.get(i).getOffensiveStuff().getStat() + "\n");
-            }
-        }
+//        for (int i = 0; i < players.size(); i++) {
+//            System.out.println("Name: " + players.get(i).getPlayerName());
+//            System.out.println("Job: " + players.get(i).getPlayerJob());
+//            System.out.println("Health: " + players.get(i).getHealth());
+//            System.out.println("Strength: " + players.get(i).getStrength() + "\n");
+//            System.out.println("Offensive Stuff: ");
+//            System.out.println("Name: " + players.get(i).getOffensiveStuff().getName());
+//            if (players.get(i).getOffensiveStuff().getCategory().equals("SWORD") || players.get(i).getOffensiveStuff().getCategory().equals("SPELL")) {
+//                System.out.println("Attack: " + players.get(i).getOffensiveStuff().getStat() + "\n");
+//            }
+//        }
     }
 }
