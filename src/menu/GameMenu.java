@@ -1,5 +1,8 @@
 package src.menu;
 
+import src.board.Cell;
+import src.player.Player;
+
 import java.util.Scanner;
 
 public class GameMenu {
@@ -11,14 +14,14 @@ public class GameMenu {
         this.userValue = "";
     }
 
-    public void gameStat(int roleValue, int playerPosition) {
-        System.out.println("Player: FLORENT");
+    public void gameStat(Player player, int roleValue, int playerPosition) {
+        System.out.println("Player: " + player.getPlayerName());
         System.out.println("Dice value: " + roleValue);
         System.out.println("Cell n°: " + playerPosition + "\n");
     }
 
     public boolean rollDice() {
-        System.out.println("Roll the dice ? [ENTER]" + "\n");
+        System.out.println("Roll dice: [ENTER]" + "\n");
 
         if (scanner.nextLine().equals("")) {
             return true;
@@ -56,5 +59,10 @@ public class GameMenu {
                 System.out.println("No [N]");
             }
         }
+    }
+
+    public void displayCell(Cell cell) {
+        System.out.println("Vous avez ouvert la cellule:");
+        System.out.println(cell.toString());
     }
 }

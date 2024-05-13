@@ -1,6 +1,8 @@
 package src.stuff;
 
-public abstract class Stuff {
+import src.board.Cell;
+
+public abstract class Stuff implements Cell {
     protected String category;
     protected String name;
     protected int stat;
@@ -41,6 +43,7 @@ public abstract class Stuff {
         return stat;
     }
 
+    @Override
     public String toString() {
         return category + " " + name + " " + stat;
     }

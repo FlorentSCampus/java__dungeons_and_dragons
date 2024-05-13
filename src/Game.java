@@ -1,6 +1,7 @@
 package src;
 
 import src.board.Board;
+import src.board.Cell;
 import src.board.Dice;
 import src.menu.Menu;
 import src.player.Player;
@@ -9,26 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private Board board;
-    private Dice dice;
-    private Menu menu;
+    private final Board board;
+    private final Dice dice;
+    private final Menu menu;
 
-    private int boardCellsCount;
     private int playerPosition;
     private boolean isWon;
 
-    private List<Player> players;
+    private final List<Player> players;
 
-    public Game(Menu menu) {
+    public Game(Dice dice, Menu menu) {
         this.board = new Board();
-        this.dice = new Dice();
+        this.dice = dice;
         this.menu = menu;
 
-        this.boardCellsCount = 64;
-        this.playerPosition = 1;
+        this.playerPosition = 0;
         this.isWon = false;
 
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
     }
 
     public void init() {
@@ -44,28 +43,39 @@ public class Game {
     }
 
     public void launch() {
-        board = new Board(boardCellsCount);
-        board.setBoard();
-
         while (!isWon) {
-            for (int i = 0; i < 1; i++) { // i < players.size()
-                menu.getGameMenu().gameStat(dice.getRollValue(), playerPosition);
-                board.getBoard(playerPosition);
+            for (int i = 0; i < players.size(); i++) {
+                Cell cell;
+                int diceValue = 0;
+                int boardSize = board.size() - 1;
+
+                System.out.println(playerPosition);
+                System.out.println(board.size());
+
+                if (playerPosition == 0) {
+                    menu.getGameMenu().gameStat(players.get(i), diceValue, playerPosition);
+                }
 
                 if (menu.getGameMenu().rollDice()) {
-                    dice.setRollValue();
-                    playerPosition = playerPosition + dice.getRollValue();
+                    diceValue = dice.throwDice();
+                    playerPosition = playerPosition + diceValue;
+                    menu.getGameMenu().gameStat(players.get(i), diceValue, playerPosition);
                 }
 
-                if (playerPosition > boardCellsCount) {
-                    playerPosition = boardCellsCount - (playerPosition - boardCellsCount);
+                if (playerPosition > boardSize) {
+                    playerPosition = boardSize - (playerPosition - boardSize);
                 }
 
-                if (playerPosition == boardCellsCount) {
-                    menu.getGameMenu().gameStat(dice.getRollValue(), playerPosition);
-                    board.getBoard(playerPosition);
+                if (playerPosition == boardSize) {
+                    menu.getGameMenu().gameStat(players.get(i), diceValue, playerPosition);
+                    board.getCell(playerPosition);
                     menu.getGameMenu().isWon();
                     isWon = true;
+                } else {
+                    cell = board.getCell(playerPosition);
+                    menu.getGameMenu().displayCell(cell);
+
+                    cell.open(players.get(i));
                 }
             }
         }

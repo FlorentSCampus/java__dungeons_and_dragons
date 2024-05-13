@@ -10,7 +10,6 @@ public class Wizard extends Player {
         this.health = 6;
         this.strength = 15;
 
-        this.defensiveStuff = new Barrier();
         this.offensiveStuff = new Fire();
     }
 
@@ -20,7 +19,7 @@ public class Wizard extends Player {
         this.health = 6;
         this.strength = 15;
 
-        this.defensiveStuff = new Barrier();
+        this.defensiveStuff = null;
         this.offensiveStuff = new Fire();
     }
 }
