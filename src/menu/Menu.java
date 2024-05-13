@@ -1,11 +1,5 @@
 package src.menu;
 
-import src.player.Player;
-import src.player.job.Warrior;
-import src.player.job.Wizard;
-
-import java.util.Scanner;
-
 public class Menu {
     private GameMenu gameMenu;
     private InitMenu initMenu;

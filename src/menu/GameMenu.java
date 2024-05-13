@@ -1,7 +1,5 @@
 package src.menu;
 
-import src.board.Dice;
-
 import java.util.Scanner;
 
 public class GameMenu {
@@ -33,22 +31,22 @@ public class GameMenu {
         System.out.println("IS WON !!!" + "\n");
     }
 
-    public boolean isNewGame(boolean isWon) {
-        if(isWon) {
+    public boolean isNewGame() {
             System.out.println("would you like to start a New Game ?");
             System.out.println("Yes [Y]");
             System.out.println("No [N]");
 
-            userValue = scanner.nextLine().toUpperCase();
 
-            while (true) {
-                try {
-                    if (userValue.equals("Y")) {
-                        return true;
+        while (true) {
+            try {
+                userValue = scanner.nextLine().toUpperCase();
+
+                if (userValue.equals("Y")) {
+                        return false;
                     }
 
                     if (userValue.equals("N")) {
-                        return false;
+                        return true;
                     }
 
                     throw new Exception();
@@ -58,8 +56,5 @@ public class GameMenu {
                     System.out.println("No [N]");
                 }
             }
-        }
-
-        return true;
     }
 }

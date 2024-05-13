@@ -1,9 +1,21 @@
 import src.Game;
+import src.board.Board;
+import src.menu.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
+        Menu menu = new Menu();
 //        game.init();
-        game.launch();
+
+        while(true) {
+            Game game = new Game(menu);
+            game.launch();
+
+            if (menu.getGameMenu().isNewGame()) {
+                break;
+            }
+        }
+
+
     }
 }
