@@ -1,8 +1,8 @@
 package src.stuff.defensive.shield;
 
-import src.stuff.Stuff;
+import src.stuff.defensive.DefStuff;
 
-public class WoodenPanel extends Stuff {
+public class WoodenPanel extends DefStuff {
     public WoodenPanel(){
         this.category = "SHIELD";
         this.name = "WOODEN PANEL";

@@ -32,9 +32,9 @@ public class GameMenu {
     }
 
     public boolean isNewGame() {
-            System.out.println("would you like to start a New Game ?");
-            System.out.println("Yes [Y]");
-            System.out.println("No [N]");
+        System.out.println("would you like to start a New Game ?");
+        System.out.println("Yes [Y]");
+        System.out.println("No [N]");
 
 
         while (true) {
@@ -42,19 +42,19 @@ public class GameMenu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("Y")) {
-                        return false;
-                    }
-
-                    if (userValue.equals("N")) {
-                        return true;
-                    }
-
-                    throw new Exception();
-                } catch (Exception e) {
-                    System.out.println("Please enter a valid data:");
-                    System.out.println("Yes [Y]");
-                    System.out.println("No [N]");
+                    return false;
                 }
+
+                if (userValue.equals("N")) {
+                    return true;
+                }
+
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("Please enter a valid data:");
+                System.out.println("Yes [Y]");
+                System.out.println("No [N]");
             }
+        }
     }
 }

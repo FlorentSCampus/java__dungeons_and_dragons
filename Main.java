@@ -5,10 +5,10 @@ import src.menu.Menu;
 public class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();
-//        game.init();
 
         while(true) {
             Game game = new Game(menu);
+            game.init();
             game.launch();
 
             if (menu.getGameMenu().isNewGame()) {

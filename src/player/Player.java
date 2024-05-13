@@ -1,6 +1,7 @@
 package src.player;
 
-import src.stuff.Stuff;
+import src.stuff.defensive.DefStuff;
+import src.stuff.offensive.OffStuff;
 
 public abstract class Player {
     protected String playerName;
@@ -9,8 +10,8 @@ public abstract class Player {
     protected int health;
     protected int strength;
 
-    protected Stuff defensiveStuff;
-    protected Stuff offensiveStuff;
+    protected DefStuff defensiveStuff;
+    protected OffStuff offensiveStuff;
 
     public Player() {
         this.playerName = "";
@@ -60,19 +61,19 @@ public abstract class Player {
         return strength;
     }
 
-    public void setDefensiveStuff(Stuff defensiveStuff) {
+    public void setDefensiveStuff(DefStuff defensiveStuff) {
         this.defensiveStuff = defensiveStuff;
     }
 
-    public Stuff getDefensiveStuff() {
+    public DefStuff getDefensiveStuff() {
         return defensiveStuff;
     }
 
-    public void setOffensiveStuff(Stuff offensiveStuff) {
+    public void setOffensiveStuff(OffStuff offensiveStuff) {
         this.offensiveStuff = offensiveStuff;
     }
 
-    public Stuff getOffensiveStuff() {
+    public OffStuff getOffensiveStuff() {
         return offensiveStuff;
     }
 }

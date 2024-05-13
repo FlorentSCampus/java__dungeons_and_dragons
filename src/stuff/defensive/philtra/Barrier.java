@@ -1,8 +1,8 @@
 package src.stuff.defensive.philtra;
 
-import src.stuff.Stuff;
+import src.stuff.defensive.DefStuff;
 
-public class Barrier extends Stuff {
+public class Barrier extends DefStuff {
     public Barrier(){
         this.category = "PHILTRA";
         this.name = "BARRIER";

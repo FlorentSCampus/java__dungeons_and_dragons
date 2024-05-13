@@ -1,8 +1,8 @@
 package src.stuff.offensive.sword;
 
-import src.stuff.Stuff;
+import src.stuff.offensive.OffStuff;
 
-public class WoodenSword extends Stuff {
+public class WoodenSword extends OffStuff {
     public WoodenSword(){
         this.category = "WEAPON";
         this.name = "WOODEN SWORD";
