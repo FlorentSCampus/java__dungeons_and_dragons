@@ -14,7 +14,13 @@ public class IronMass extends OffStuff {
     @Override
     public void open(Player player) {
         if(player instanceof Warrior) {
-            player.setOffensiveStuff(this);
+            int currentPlayerStrength = player.getStrength();
+            int currentWeaponStat = player.getOffensiveStuff().getStat();
+
+            if(this.getStat() > player.getOffensiveStuff().getStat()) {
+                player.setStrength((currentPlayerStrength - currentWeaponStat) + this.getStat());
+                player.setOffensiveStuff(this);
+            }
         }
     }
 

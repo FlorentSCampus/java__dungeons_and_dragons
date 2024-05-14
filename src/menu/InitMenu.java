@@ -241,11 +241,17 @@ public class InitMenu {
 
     public Player createPlayer() {
         if (playerJob.equals("WARRIOR")) {
-            return new Warrior(playerName, playerJob);
+            warrior = new Warrior(playerName, playerJob);
+            warrior.setStrength(warrior.getStrength() + warrior.getOffensiveStuff().getStat());
+
+            return warrior;
         }
 
         if (playerJob.equals("WIZARD")) {
-            return new Wizard(playerName, playerJob);
+            wizard = new Wizard(playerName, playerJob);
+            wizard.setStrength(wizard.getStrength() + wizard.getOffensiveStuff().getStat());
+
+            return wizard;
         }
 
         return null;

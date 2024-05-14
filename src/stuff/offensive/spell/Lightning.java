@@ -15,6 +15,10 @@ public class Lightning extends OffStuff {
     public void open(Player player) {
         if(player instanceof Wizard) {
             player.setOffensiveStuff(this);
+
+            if(this.getStat() > player.getOffensiveStuff().getStat()) {
+                player.setStrength(player.getStrength() + this.getStat());
+            }
         }
     }
 

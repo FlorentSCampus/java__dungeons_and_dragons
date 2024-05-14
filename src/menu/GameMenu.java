@@ -62,7 +62,6 @@ public class GameMenu {
     }
 
     public void displayCell(Cell cell) {
-        System.out.println("Vous avez ouvert la cellule:");
         System.out.println(cell.toString());
     }
 }

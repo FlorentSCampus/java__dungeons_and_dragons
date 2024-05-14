@@ -26,7 +26,7 @@ public class Game {
         this.dice = dice;
         this.menu = menu;
 
-        this.playerPosition = 0;
+        this.playerPosition = (-1);
         this.isWon = false;
 
         this.players = new ArrayList<>();
@@ -46,38 +46,43 @@ public class Game {
 
     public void launch() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         board.setCells();
-        players.add(new Warrior("FLORENT", "WARRIOR"));
+
+        // TO DELETE
+        players.add(new Warrior("FLORENT", "WARRIOR")); // DO DELETE
+        players.get(0).setStrength(players.get(0).getStrength() + players.get(0).getOffensiveStuff().getStat());
+
+
         while (!isWon) {
             for (int i = 0; i < players.size(); i++) {
                 Cell cell;
                 int diceValue = 0;
-                int boardSize = board.getSize() - 1;
-//
-//                if (playerPosition == 0) {
-//                    System.out.println(players.get(i).getPlayerName());
-//                }
-//
-//                if (menu.getGameMenu().rollDice()) {
-//                    diceValue = dice.throwDice();
-//                    playerPosition = playerPosition + diceValue;
-//                    menu.getGameMenu().gameStat(players.get(i), diceValue, playerPosition);
-//                }
-//
-//                if (playerPosition > boardSize) {
-//                    playerPosition = boardSize - (playerPosition - boardSize);
-//                }
-//
-//                if (playerPosition == boardSize) {
-//                    menu.getGameMenu().gameStat(players.get(i), diceValue, playerPosition);
-//                    board.getCell(playerPosition);
-//                    menu.getGameMenu().isWon();
-//                    isWon = true;
-//                } else {
-//                    cell = board.getCell(playerPosition);
-//                    menu.getGameMenu().displayCell(cell);
-//
-//                    cell.open(players.get(i));
-//                }
+                int boardSize = (board.getSize() - 1);
+
+                if (playerPosition == (-1)) {
+                    System.out.println(players.get(i).getPlayerName());
+                }
+
+                if (menu.getGameMenu().rollDice()) {
+                    diceValue = dice.throwDice();
+                    playerPosition = playerPosition + diceValue;
+
+                    if (playerPosition > boardSize) {
+                        playerPosition = boardSize - (playerPosition - boardSize);
+                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
+                    } else {
+                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
+                    }
+
+                    if (playerPosition == boardSize) {
+                        menu.getGameMenu().isWon();
+                        isWon = true;
+                    } else {
+                        cell = board.getCell(playerPosition);
+                        menu.getGameMenu().displayCell(cell);
+
+                        cell.open(players.get(i));
+                    }
+                }
             }
         }
 

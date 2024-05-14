@@ -9,6 +9,6 @@ public class EmptyCell implements Cell{
 
     @Override
     public String toString() {
-        return "EMPTY CELL";
+        return "EMPTY CELL" + "\n";
     }
 }
