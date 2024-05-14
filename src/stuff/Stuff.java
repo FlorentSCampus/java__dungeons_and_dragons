@@ -1,6 +1,6 @@
 package src.stuff;
 
-import src.board.Cell;
+import src.board.cell.Cell;
 
 public abstract class Stuff implements Cell {
     protected String category;

@@ -4,11 +4,11 @@ import src.player.Player;
 import src.player.job.Wizard;
 import src.stuff.offensive.OffStuff;
 
-public class Fire extends OffStuff {
-    public Fire(){
+public class Fireball extends OffStuff {
+    public Fireball() {
         this.category = "SPELL";
-        this.name = "FIRE";
-        this.stat = 1;
+        this.name = "FIREBALL";
+        this.stat = 7;
     }
 
     @Override

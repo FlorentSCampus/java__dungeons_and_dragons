@@ -1,4 +1,4 @@
-package src.board;
+package src.board.dice;
 
 public class FakeDice implements Dice {
     private final int fixedValue;

@@ -1,4 +1,4 @@
-package src.board;
+package src.board.cell;
 
 import src.player.Player;
 

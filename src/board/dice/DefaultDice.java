@@ -1,8 +1,8 @@
-package src.board;
+package src.board.dice;
 
 import java.util.Random;
 
-public class NormalDice implements Dice {
+public class DefaultDice implements Dice {
 
     @Override
     public int throwDice() {

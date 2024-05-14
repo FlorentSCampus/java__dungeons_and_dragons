@@ -1,19 +1,19 @@
 import src.Game;
-import src.board.Board;
-import src.board.Dice;
-import src.board.FakeDice;
-import src.board.NormalDice;
+import src.board.dice.Dice;
+import src.board.dice.FakeDice;
 import src.menu.Menu;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Menu menu = new Menu();
         Dice dice = new FakeDice(1);
-//        Dice dice = new NormalDice();
+//        Dice dice = new DefaultDice();
 
         while(true) {
             Game game = new Game(dice, menu);
-            game.init();
+//            game.init();
             game.launch();
 
             if (menu.getGameMenu().isNewGame()) {

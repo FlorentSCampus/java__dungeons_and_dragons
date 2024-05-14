@@ -1,6 +1,6 @@
 package src.menu;
 
-import src.board.Cell;
+import src.board.cell.Cell;
 import src.player.Player;
 
 import java.util.Scanner;

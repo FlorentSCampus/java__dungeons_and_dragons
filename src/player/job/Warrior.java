@@ -2,7 +2,7 @@ package src.player.job;
 
 import src.player.Player;
 import src.stuff.defensive.shield.WoodenPanel;
-import src.stuff.offensive.sword.WoodenSword;
+import src.stuff.offensive.weapon.WoodenSword;
 
 public class Warrior extends Player {
     public Warrior() {
@@ -10,6 +10,7 @@ public class Warrior extends Player {
         this.health = 10;
         this.strength = 10;
 
+        this.defensiveStuff = new WoodenPanel();
         this.offensiveStuff = new WoodenSword();
     }
 
@@ -19,7 +20,7 @@ public class Warrior extends Player {
         this.health = 10;
         this.strength = 10;
 
-        this.defensiveStuff = null;
+        this.defensiveStuff = new WoodenPanel();
         this.offensiveStuff = new WoodenSword();
     }
 }

@@ -151,6 +151,9 @@ public class InitMenu {
         System.out.println("Offensive Stuff: ");
         System.out.println("Name: " + warrior.getOffensiveStuff().getName());
         System.out.println("Attack: " + warrior.getOffensiveStuff().getStat() + "\n");
+        System.out.println("Defensive Stuff: ");
+        System.out.println("Name: " + warrior.getDefensiveStuff().getName());
+        System.out.println("Attack: " + warrior.getDefensiveStuff().getStat() + "\n");
 
         System.out.println("WIZARD");
         System.out.println("Health: " + wizard.getHealth());
@@ -158,6 +161,9 @@ public class InitMenu {
         System.out.println("Offensive Stuff: ");
         System.out.println("Name: " + wizard.getOffensiveStuff().getName());
         System.out.println("Attack: " + wizard.getOffensiveStuff().getStat() + "\n");
+        System.out.println("Defensive Stuff: ");
+        System.out.println("Name: " + wizard.getDefensiveStuff().getName());
+        System.out.println("Attack: " + wizard.getDefensiveStuff().getStat() + "\n");
 
         System.out.println("Back [B]");
 

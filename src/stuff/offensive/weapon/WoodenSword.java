@@ -1,4 +1,4 @@
-package src.stuff.offensive.sword;
+package src.stuff.offensive.weapon;
 
 import src.player.Player;
 import src.player.job.Warrior;
@@ -8,7 +8,7 @@ public class WoodenSword extends OffStuff {
     public WoodenSword(){
         this.category = "WEAPON";
         this.name = "WOODEN SWORD";
-        this.stat = 5;
+        this.stat = 1;
     }
 
     @Override
@@ -16,5 +16,10 @@ public class WoodenSword extends OffStuff {
         if(player instanceof Warrior) {
             player.setOffensiveStuff(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "You find a " + getCategory() + " !" + "\n" + "Name: " + getName() + "\n" + "Attack stat: " + getStat() + "\n";
     }
 }

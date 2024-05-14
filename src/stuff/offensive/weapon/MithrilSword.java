@@ -1,19 +1,19 @@
-package src.stuff.offensive.spell;
+package src.stuff.offensive.weapon;
 
 import src.player.Player;
-import src.player.job.Wizard;
+import src.player.job.Warrior;
 import src.stuff.offensive.OffStuff;
 
-public class Fire extends OffStuff {
-    public Fire(){
-        this.category = "SPELL";
-        this.name = "FIRE";
-        this.stat = 1;
+public class MithrilSword extends OffStuff {
+    public MithrilSword(){
+        this.category = "WEAPON";
+        this.name = "MITHRIL SWORD";
+        this.stat = 5;
     }
 
     @Override
     public void open(Player player) {
-        if(player instanceof Wizard) {
+        if(player instanceof Warrior) {
             player.setOffensiveStuff(this);
         }
     }
