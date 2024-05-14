@@ -3,6 +3,7 @@ package src.menu;
 import src.board.cell.Cell;
 import src.player.Player;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameMenu {
@@ -14,13 +15,8 @@ public class GameMenu {
         this.userValue = "";
     }
 
-    public void gameStat(Player player, int roleValue, int playerPosition) {
-        System.out.println("Player: " + player.getPlayerName());
-        System.out.println("Dice value: " + roleValue);
-        System.out.println("Cell n°: " + playerPosition + "\n");
-    }
-
-    public boolean rollDice() {
+    public boolean rollDice(Player player) {
+        System.out.println(player.getPlayerName() + "'s turn !");
         System.out.println("Roll dice: [ENTER]" + "\n");
 
         if (scanner.nextLine().equals("")) {
@@ -30,15 +26,36 @@ public class GameMenu {
         return false;
     }
 
+    public void gameStat(Player player, int roleValue, int playerPosition) {
+        System.out.println("Dice value: " + roleValue);
+        System.out.println("Cell n°: " + playerPosition + "\n");
+    }
+
+    public void playerStat(Player player) {
+        System.out.println("Job: " + player.getPlayerJob());
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Strength base: " + (player.getStrength() - player.getOffensiveStuff().getStat()));
+        System.out.println("Strength full: " + player.getStrength());
+        System.out.println("Stuff name: " + player.getOffensiveStuff().getName());
+        System.out.println("Stuff attack: " + player.getOffensiveStuff().getStat() + "\n");
+    }
+
+    public void displayCell(Cell cell) {
+        System.out.println(cell.toString());
+    }
+
     public void isWon() {
-        System.out.println("IS WON !!!" + "\n");
+        System.out.println("YOU WON !!!" + "\n");
+    }
+
+    public void isGameOver() {
+        System.out.println("YOU LOOSE !!!" + "\n");
     }
 
     public boolean isNewGame() {
         System.out.println("would you like to start a New Game ?");
         System.out.println("Yes [Y]");
         System.out.println("No [N]");
-
 
         while (true) {
             try {
@@ -61,7 +78,87 @@ public class GameMenu {
         }
     }
 
-    public void displayCell(Cell cell) {
-        System.out.println(cell.toString());
+    public boolean battlePhase(Player player, Cell cell) throws InterruptedException {
+        final Object exec = new Object();
+
+        if (cell.getItemCategory().equals("ENEMY")) {
+            synchronized (exec) {
+                System.out.println("BATTLE BEGIN !!!" + "\n");
+                exec.wait(1000);
+                System.out.println("Game chooses the first attacker" + "\n");
+                for (int i = 0; i < 3; i++) {
+                    exec.wait(500);
+                    System.out.print(".");
+
+                    if (i == 2) {
+                        System.out.println("\n");
+                    }
+                }
+                exec.wait(1000);
+
+                double turnOf = Math.round(Math.random());
+
+                if (turnOf == 0) {
+                    System.out.println("You start!" + "\n");
+                    exec.wait(2500);
+                } else {
+                    System.out.println(cell.getItemName() + " start!" + "\n");
+                    exec.wait(2500);
+                }
+
+                while (true) {
+                    battleInfo(player, cell);
+
+                    if (turnOf == 0) {
+                        System.out.println("Your " + player.getPlayerJob() + " attacks" + "\n");
+                        exec.wait(2500);
+                        System.out.println(cell.getItemName() + " takes -" + player.getStrength() + " damages" + "\n");
+                        exec.wait(2500);
+
+                        int enemyHealth = (cell.getItemHealth() - player.getStrength());
+
+                        cell.setItemHealth(enemyHealth);
+
+                        if (enemyHealth <= 0) {
+                            System.out.println("You've killed " + cell.getItemName() + "\n");
+                            exec.wait(2500);
+                            return false;
+                        }
+
+                        turnOf = 1;
+                    } else {
+                        System.out.println(cell.getItemName() + " attacks" + "\n");
+                        exec.wait(2500);
+                        System.out.println("Your " + player.getPlayerJob() + " takes -" + cell.getItemStrength() + " damages" + "\n");
+                        exec.wait(2500);
+
+                        int playerHealth = (player.getHealth() - cell.getItemStrength());
+
+                        player.setHealth(playerHealth);
+
+                        if (playerHealth <= 0) {
+                            System.out.println(cell.getItemName() + " killed you" + "\n");
+                            exec.wait(2500);
+                            return true;
+                        }
+
+                        turnOf = 0;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void battleInfo(Player player, Cell cell) {
+        System.out.println("You stats:");
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Strength: " + player.getStrength());
+        System.out.println();
+        System.out.println(cell.getItemName() + " stats:");
+        System.out.println("Health: " + cell.getItemHealth());
+        System.out.println("Strength: " + cell.getItemStrength());
+        System.out.println();
     }
 }

@@ -4,11 +4,16 @@ import src.board.cell.Cell;
 import src.player.Player;
 
 public class Enemy implements Cell {
+    protected String category;
     protected String name;
     protected int health;
     protected int strength;
 
     public Enemy () {
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getName() {
@@ -33,6 +38,31 @@ public class Enemy implements Cell {
 
     @Override
     public void open(Player player) {
+    }
+
+    @Override
+    public String getItemCategory() {
+        return getCategory();
+    }
+
+    @Override
+    public String getItemName() {
+        return getName();
+    }
+
+    @Override
+    public int getItemHealth() {
+        return getHealth();
+    }
+
+    @Override
+    public void setItemHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
+    public int getItemStrength() {
+        return getStrength();
     }
 
     @Override

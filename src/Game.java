@@ -18,6 +18,7 @@ public class Game {
 
     private int playerPosition;
     private boolean isWon;
+    private boolean isGameOver;
 
     private final List<Player> players;
 
@@ -28,6 +29,7 @@ public class Game {
 
         this.playerPosition = (-1);
         this.isWon = false;
+        this.isGameOver = false;
 
         this.players = new ArrayList<>();
     }
@@ -44,84 +46,43 @@ public class Game {
         }
     }
 
-    public void launch() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void launch() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InterruptedException {
         board.setCells();
 
-        // TO DELETE
-        players.add(new Warrior("FLORENT", "WARRIOR")); // DO DELETE
-        players.get(0).setStrength(players.get(0).getStrength() + players.get(0).getOffensiveStuff().getStat());
-
-
-        while (!isWon) {
-            for (int i = 0; i < players.size(); i++) {
+        while (!isWon && !isGameOver) {
+            for (int i = 0; i < players.size() && !isWon; i++) {
                 Cell cell;
                 int diceValue = 0;
                 int boardSize = (board.getSize() - 1);
 
-                if (playerPosition == (-1)) {
-                    System.out.println(players.get(i).getPlayerName());
-                }
-
-                if (menu.getGameMenu().rollDice()) {
+                if (menu.getGameMenu().rollDice(players.get(i))) {
                     diceValue = dice.throwDice();
                     playerPosition = playerPosition + diceValue;
 
                     if (playerPosition > boardSize) {
                         playerPosition = boardSize - (playerPosition - boardSize);
-                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
-                    } else {
-                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
                     }
 
                     if (playerPosition == boardSize) {
                         menu.getGameMenu().isWon();
                         isWon = true;
                     } else {
+                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
+                        menu.getGameMenu().playerStat(players.get(i));
+
                         cell = board.getCell(playerPosition);
                         menu.getGameMenu().displayCell(cell);
 
                         cell.open(players.get(i));
+
+                        isGameOver = menu.getGameMenu().battlePhase(players.get(i), cell);
+                    }
+
+                    if (isGameOver) {
+                        menu.getGameMenu().isGameOver();
                     }
                 }
             }
         }
-
-
-        // TO DELETE
-//        players.add(new Warrior("FLORENT", "WARRIOR"));
-//        System.out.println(players.get(0).getPlayerName());
-//        //
-//        dice = new Dice();
-//        dice.setRollValue();
-//        System.out.println(dice.getRollValue());
-
-//        board = new Board(64);
-//        board.setBoard();
-//
-//        int i = 0;
-//        while(i < 10){
-//            Die die = new Die();
-//            die.getDieValue();
-//            i++;
-//        }
-
-
-//        display players infos
-//        for (int i = 0; i < players.size(); i++) {
-//            System.out.println("Name: " + players.get(i).getPlayerName());
-//            System.out.println("Job: " + players.get(i).getPlayerJob());
-//            System.out.println("Health: " + players.get(i).getHealth());
-//            System.out.println("Strength: " + players.get(i).getStrength() + "\n");
-//            System.out.println("Offensive Stuff: ");
-//            System.out.println("Name: " + players.get(i).getOffensiveStuff().getName());
-//            if (players.get(i).getOffensiveStuff().getCategory().equals("WEAPON") || players.get(i).getOffensiveStuff().getCategory().equals("SPELL")) {
-//                System.out.println("Attack: " + players.get(i).getOffensiveStuff().getStat() + "\n");
-//            }
-//            System.out.println("Defensive Stuff: ");
-//            System.out.println("Name: " + players.get(i).getDefensiveStuff().getName());
-//            if (players.get(i).getDefensiveStuff().getCategory().equals("SHIELD") || players.get(i).getDefensiveStuff().getCategory().equals("PHILTRA")) {
-//                System.out.println("Defense: " + players.get(i).getDefensiveStuff().getStat() + "\n");
-//            }
-//        }
     }
 }

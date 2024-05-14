@@ -1,5 +1,7 @@
 package src.menu;
 
+import src.player.Player;
+
 public class Menu {
     private GameMenu gameMenu;
     private InitMenu initMenu;

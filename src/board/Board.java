@@ -81,7 +81,7 @@ public class Board {
                 System.out.print(format);
             }
 
-            if ((i + 1) % 8 == 0) {
+            if (((i + 1) % 8 == 0) && (i < (cells.size() - 1))) {
                 System.out.println();
             }
         }
