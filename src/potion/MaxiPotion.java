@@ -11,7 +11,7 @@ public class MaxiPotion implements Cell {
     public MaxiPotion() {
         this.category = "POTION";
         this.name = "MAXI POTION";
-        this.care = 2;
+        this.care = 5;
     }
 
     public String getCategory() {

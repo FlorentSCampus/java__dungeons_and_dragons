@@ -26,7 +26,7 @@ public class GameMenu {
         return false;
     }
 
-    public void gameStat(Player player, int roleValue, int playerPosition) {
+    public void gameStat(int roleValue, int playerPosition) {
         System.out.println("Dice value: " + roleValue);
         System.out.println("Cell n°: " + playerPosition + "\n");
     }
@@ -53,7 +53,7 @@ public class GameMenu {
     }
 
     public boolean isNewGame() {
-        System.out.println("would you like to start a New Game ?");
+        System.out.println("Would you like to start a New Game ?");
         System.out.println("Yes [Y]");
         System.out.println("No [N]");
 
@@ -87,7 +87,7 @@ public class GameMenu {
                 exec.wait(1000);
                 System.out.println("Game chooses the first attacker" + "\n");
                 for (int i = 0; i < 3; i++) {
-                    exec.wait(500);
+                    exec.wait(1000);
                     System.out.print(".");
 
                     if (i == 2) {
@@ -100,10 +100,10 @@ public class GameMenu {
 
                 if (turnOf == 0) {
                     System.out.println("You start!" + "\n");
-                    exec.wait(2500);
+                    exec.wait(1000);
                 } else {
                     System.out.println(cell.getItemName() + " start!" + "\n");
-                    exec.wait(2500);
+                    exec.wait(1000);
                 }
 
                 while (true) {
@@ -111,9 +111,9 @@ public class GameMenu {
 
                     if (turnOf == 0) {
                         System.out.println("Your " + player.getPlayerJob() + " attacks" + "\n");
-                        exec.wait(2500);
+                        exec.wait(1000);
                         System.out.println(cell.getItemName() + " takes -" + player.getStrength() + " damages" + "\n");
-                        exec.wait(2500);
+                        exec.wait(1000);
 
                         int enemyHealth = (cell.getItemHealth() - player.getStrength());
 
@@ -121,16 +121,16 @@ public class GameMenu {
 
                         if (enemyHealth <= 0) {
                             System.out.println("You've killed " + cell.getItemName() + "\n");
-                            exec.wait(2500);
+                            exec.wait(1000);
                             return false;
                         }
 
                         turnOf = 1;
                     } else {
                         System.out.println(cell.getItemName() + " attacks" + "\n");
-                        exec.wait(2500);
+                        exec.wait(1000);
                         System.out.println("Your " + player.getPlayerJob() + " takes -" + cell.getItemStrength() + " damages" + "\n");
-                        exec.wait(2500);
+                        exec.wait(1000);
 
                         int playerHealth = (player.getHealth() - cell.getItemStrength());
 
@@ -138,7 +138,7 @@ public class GameMenu {
 
                         if (playerHealth <= 0) {
                             System.out.println(cell.getItemName() + " killed you" + "\n");
-                            exec.wait(2500);
+                            exec.wait(1000);
                             return true;
                         }
 

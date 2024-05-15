@@ -91,6 +91,16 @@ public class Board {
         return cells.get(playerPosition);
     }
 
+    public void deleteCell(Cell cell, int playerPosition) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (!cell.getItemName().equals("EMPTY CELL")) {
+            Class<?> itemClass = Class.forName("src.board.cell.EmptyCell");
+            Constructor<?> constructor = itemClass.getDeclaredConstructor();
+            Object itemInstance = constructor.newInstance();
+
+            cells.set(playerPosition, (Cell) itemInstance);
+        }
+    }
+
     public int getSize() {
         return cells.size();
     }

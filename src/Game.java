@@ -67,7 +67,7 @@ public class Game {
                         menu.getGameMenu().isWon();
                         isWon = true;
                     } else {
-                        menu.getGameMenu().gameStat(players.get(i), diceValue, (playerPosition + 1));
+                        menu.getGameMenu().gameStat(diceValue, (playerPosition + 1));
                         menu.getGameMenu().playerStat(players.get(i));
 
                         cell = board.getCell(playerPosition);
@@ -76,6 +76,8 @@ public class Game {
                         cell.open(players.get(i));
 
                         isGameOver = menu.getGameMenu().battlePhase(players.get(i), cell);
+
+                        board.deleteCell(cell, playerPosition);
                     }
 
                     if (isGameOver) {

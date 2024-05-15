@@ -12,6 +12,12 @@ public class InitMenu {
 
     private Scanner scanner = new Scanner(System.in);
 
+    private final int JOB_SELECTION_MENU = 2;
+    private final int JOB_INFO_MENU = 3;
+    private final int PLAYER_INFO_MODIFICATION_MENU = 4;
+    private final int PLAYER_VALIDATION_MENU = 5;
+    private final int CREATION = 6;
+
     private String userValue;
     private int menuIndex;
 
@@ -92,7 +98,7 @@ public class InitMenu {
 
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("Please enter a number");
+                System.out.println("Please enter a number or [ENTER] to assign the default value (1)");
             }
         }
     }
@@ -104,9 +110,9 @@ public class InitMenu {
         playerName = scanner.nextLine().toUpperCase();
 
         if (!isModify) {
-            return 2;
+            return JOB_SELECTION_MENU;
         } else {
-            return 4;
+            return PLAYER_INFO_MODIFICATION_MENU;
         }
     }
 
@@ -120,16 +126,16 @@ public class InitMenu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("J")) {
-                    return 3;
+                    return JOB_INFO_MENU;
                 }
 
                 if (userValue.equals("WARRIOR") || userValue.equals("WIZARD")) {
                     playerJob = userValue;
 
                     if (!isModify) {
-                        return 5;
+                        return PLAYER_VALIDATION_MENU;
                     } else {
-                        return 4;
+                        return PLAYER_INFO_MODIFICATION_MENU;
                     }
                 }
 
@@ -172,7 +178,7 @@ public class InitMenu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("B")) {
-                    return 2;
+                    return JOB_SELECTION_MENU;
                 }
 
                 throw new Exception();
@@ -193,17 +199,15 @@ public class InitMenu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("P")) {
-                    setPlayerName(true);
-                    return 4;
+                    return setPlayerName(true);
                 }
 
                 if (userValue.equals("J")) {
-                    setPlayerJob(true);
-                    return 4;
+                    return setPlayerJob(true);
                 }
 
                 if (userValue.equals("B")) {
-                    return 5;
+                    return PLAYER_VALIDATION_MENU;
                 }
 
                 throw new Exception();
@@ -225,11 +229,11 @@ public class InitMenu {
                 userValue = scanner.nextLine().toUpperCase();
 
                 if (userValue.equals("M")) {
-                    return 4;
+                    return PLAYER_INFO_MODIFICATION_MENU;
                 }
 
                 if (userValue.equals("O")) {
-                    return 6;
+                    return CREATION;
                 }
 
                 throw new Exception();

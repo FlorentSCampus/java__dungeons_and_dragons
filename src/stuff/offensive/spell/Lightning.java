@@ -14,10 +14,12 @@ public class Lightning extends OffStuff {
     @Override
     public void open(Player player) {
         if(player instanceof Wizard) {
-            player.setOffensiveStuff(this);
+            int currentPlayerStrength = player.getStrength();
+            int currentWeaponStat = player.getOffensiveStuff().getStat();
 
             if(this.getStat() > player.getOffensiveStuff().getStat()) {
-                player.setStrength(player.getStrength() + this.getStat());
+                player.setStrength((currentPlayerStrength - currentWeaponStat) + this.getStat());
+                player.setOffensiveStuff(this);
             }
         }
     }
