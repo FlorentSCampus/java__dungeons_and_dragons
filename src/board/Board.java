@@ -1,6 +1,15 @@
 package src.board;
 
 import src.board.cell.Cell;
+import src.enemy.Dragon;
+import src.enemy.Goblin;
+import src.enemy.Necromancer;
+import src.potion.MaxiPotion;
+import src.potion.MiniPotion;
+import src.stuff.offensive.spell.Fireball;
+import src.stuff.offensive.spell.Lightning;
+import src.stuff.offensive.weapon.IronMass;
+import src.stuff.offensive.weapon.MithrilSword;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,37 +24,37 @@ public class Board {
 
     public void setCells() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Random random = new Random();
-        List<String> items = new ArrayList<>();
+        List<Class<?>> items = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             if (i < 2) {
-                items.add("src.stuff.offensive.spell.Fireball");
-                items.add("src.potion.MaxiPotion");
+                items.add(Fireball.class);
+                items.add(MaxiPotion.class);
             }
 
             if (i < 4) {
-                items.add("src.enemy.Dragon");
-                items.add("src.stuff.offensive.weapon.MithrilSword");
+                items.add(Dragon.class);
+                items.add(MithrilSword.class);
             }
 
             if (i < 5) {
-                items.add("src.stuff.offensive.weapon.IronMass");
-                items.add("src.stuff.offensive.spell.Lightning");
+                items.add(IronMass.class);
+                items.add(Lightning.class);
             }
 
             if (i < 6) {
-                items.add("src.potion.MiniPotion");
+                items.add(MiniPotion.class);
             }
 
             if (i < 10) {
-                items.add("src.enemy.Goblin");
-                items.add("src.enemy.Necromancer");
+                items.add(Goblin.class);
+                items.add(Necromancer.class);
             }
         }
 
         Collections.shuffle(items);
 
-        for (String item : items) {
+        for (Class<?> item : items) {
             int i;
 
             do {
@@ -53,9 +62,7 @@ public class Board {
             }
             while (cells.get(i) != null);
             {
-                Class<?> itemClass = Class.forName(item);
-                Constructor<?> constructor = itemClass.getDeclaredConstructor();
-                Object itemInstance = constructor.newInstance();
+                Object itemInstance = item.getDeclaredConstructor().newInstance();
 
                 cells.set(i, (Cell) itemInstance);
             }
