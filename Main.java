@@ -19,7 +19,9 @@ public class Main {
 
         DB db = new DB();
 //        db.getHero(db.getConnection());
-        db.createHero(db.getConnection(), "warrior", "florent");
+//        db.createHero(db.getConnection(), "WARRIOR", "FLORENT");
+//        db.editHero(db.getConnection(), 9, "new ME");
+//        db.editHealth(db.getConnection(), 9, 50);
 
 
 

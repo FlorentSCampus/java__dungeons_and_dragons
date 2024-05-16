@@ -30,36 +30,32 @@ public class DB {
     }
 
     public void getHero(Connection db) throws SQLException {
-        try {
-            Statement statement = db.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM hero");
+        Statement statement = db.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM hero");
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String type = resultSet.getString("type").toUpperCase();
-                String name = resultSet.getString("name").toUpperCase();
-                int health = resultSet.getInt("health");
-                int strength = resultSet.getInt("strength");
-                String offStuff = resultSet.getString("off_stuff").toUpperCase();
-                String defStuff = resultSet.getString("def_stuff").toUpperCase();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String type = resultSet.getString("type").toUpperCase();
+            String name = resultSet.getString("name").toUpperCase();
+            int health = resultSet.getInt("health");
+            int strength = resultSet.getInt("strength");
+            String offStuff = resultSet.getString("off_stuff").toUpperCase();
+            String defStuff = resultSet.getString("def_stuff").toUpperCase();
 
-                System.out.println("Id: " + id);
-                System.out.println("Type: " + type);
-                System.out.println("Name: " + name);
-                System.out.println("Health: " + health);
-                System.out.println("Strength: " + strength);
-                System.out.println("Off stuff: " + offStuff);
-                System.out.println("Def stuff: " + defStuff);
-                System.out.println();
-            }
-
-            db.close();
-        } catch (SQLException e) {
-            System.out.println("Failed connection to database!");
+            System.out.println("Id: " + id);
+            System.out.println("Type: " + type);
+            System.out.println("Name: " + name);
+            System.out.println("Health: " + health);
+            System.out.println("Strength: " + strength);
+            System.out.println("Off stuff: " + offStuff);
+            System.out.println("Def stuff: " + defStuff);
+            System.out.println();
         }
+
+        db.close();
     }
 
-    public void createHero(Connection db, String type, String name) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void createHero(Connection db, String type, String name) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
         classes.add(Warrior.class);
         classes.add(Wizard.class);
 
@@ -78,64 +74,60 @@ public class DB {
             Object offStuffName = offStuff.getClass().getMethod("getName").invoke(offStuff);
 
             if (type.toUpperCase().equals(job)) {
-                try {
-                    PreparedStatement statement = db.prepareStatement(req);
+                PreparedStatement statement = db.prepareStatement(req);
 
-                    statement.setString(1, (String) job);
-                    statement.setString(2, name.toUpperCase());
-                    statement.setInt(3, (Integer) health);
-                    statement.setInt(4, (Integer) strength);
-                    statement.setString(5, (String) offStuffName);
-                    statement.setString(6, (String) defStuffName);
+                statement.setString(1, (String) job);
+                statement.setString(2, name.toUpperCase());
+                statement.setInt(3, (Integer) health);
+                statement.setInt(4, (Integer) strength);
+                statement.setString(5, (String) offStuffName);
+                statement.setString(6, (String) defStuffName);
 
-                    int rowsInserted = statement.executeUpdate();
-                    if (rowsInserted > 0) {
-                        System.out.println("Successful insertion !");
-                    } else {
-                        System.out.println("no line inserted");
-                    }
-                } catch (SQLException e) {
-                    System.out.println("Failed to database insertion");
+                int rowsInserted = statement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Successful insertion!");
+                } else {
+                    System.out.println("no line inserted");
                 }
 
                 break;
             }
-//            Object itemInstance = item.getDeclaredConstructor().newInstance();
-//
-//            Object job = item.getMethod("getPlayerJob").invoke(itemInstance);
-//            Object health = item.getMethod("getHealth").invoke(itemInstance);
-//            Object strength = item.getMethod("getStrength").invoke(itemInstance);
-//
-//            System.out.println(job + "\n" + health + "\n" + strength);
-//            System.out.println();
         }
+
+        db.close();
     }
 
-    public void editHero() {
+    public void editHero(Connection db, int id, String name) throws SQLException {
+        String req = "UPDATE hero SET name = ? WHERE id = ?";
 
+        PreparedStatement statement = db.prepareStatement(req);
+        statement.setString(1, (String) name.toUpperCase());
+        statement.setInt(2, (Integer) id);
+
+        int rowsUpdated = statement.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("Successful update!");
+        } else {
+            System.out.println("no updated");
+        }
+
+        db.close();
     }
 
-    public void editHealth(int health) {
+    public void editHealth(Connection db, int id, int health) throws SQLException {
+        String req = "UPDATE hero SET health = ? WHERE id = ?";
 
+        PreparedStatement statement = db.prepareStatement(req);
+        statement.setInt(1, (Integer) health);
+        statement.setInt(2, (Integer) id);
+
+        int rowsUpdated = statement.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("Successful update!");
+        } else {
+            System.out.println("no updated");
+        }
+
+        db.close();
     }
-
-//
-//
-//
-
-//    public void getHero() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-//        classes.add(Warrior.class);
-//        classes.add(Wizard.class);
-//
-//        for(Class<?> item : classes) {
-//            Object itemInstance = item.getDeclaredConstructor().newInstance();
-//
-//            Object job = item.getMethod("getPlayerJob").invoke(itemInstance);
-//            Object health = item.getMethod("getHealth").invoke(itemInstance);
-//            Object strength = item.getMethod("getStrength").invoke(itemInstance);
-//
-//            System.out.println(job + "\n" + health + "\n" + strength);
-//            System.out.println();
-//        }
-//    }
 }
