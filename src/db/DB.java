@@ -1,20 +1,12 @@
 package src.db;
 
-import src.player.job.Warrior;
-import src.player.job.Wizard;
-
-import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
-//import java.sql.Connection;
-//import java.sql.DriverManager;
-//import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DB {
     Config config;
-    List<Class<?>> classes = new ArrayList<>();
-
+    
     public DB() {
         this.config = new Config();
     }
@@ -29,79 +21,125 @@ public class DB {
         return null;
     }
 
-    public void getHero(Connection db) throws SQLException {
-        Statement statement = db.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM hero");
+    public void getHeroes(Connection db) throws SQLException {
+        System.out.println();
+        System.out.println("______");
+        System.out.println("HEROES");
+        System.out.println("‾‾‾‾‾‾");
+        System.out.println();
 
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String type = resultSet.getString("type").toUpperCase();
-            String name = resultSet.getString("name").toUpperCase();
-            int health = resultSet.getInt("health");
-            int strength = resultSet.getInt("strength");
-            String offStuff = resultSet.getString("off_stuff").toUpperCase();
-            String defStuff = resultSet.getString("def_stuff").toUpperCase();
+        String req = "SELECT " +
+                "h.type, " +
+                "h.health, " +
+                "h.strength," +
+                "os.category AS os_cat, " +
+                "os.name AS os_name, " +
+                "os.stat AS os_stat, " +
+                "ds.category AS ds_cat, " +
+                "ds.name AS ds_name, " +
+                "ds.stat AS ds_stat " +
+                "FROM " +
+                "hero h " +
+                "JOIN " +
+                "off_stuff os ON h.off_stuff_id = os.id " +
+                "JOIN " +
+                "def_stuff ds ON h.def_stuff_id = ds.id";
 
-            System.out.println("Id: " + id);
+        ResultSet res = db.prepareStatement(req).executeQuery();
+
+        while (res.next()) {
+            String type = res.getString("type").toLowerCase();
+            int health = res.getInt("health");
+            int strength = res.getInt("strength");
+            String offCat = res.getString("os_cat");
+            String offName = res.getString("os_name");
+            int offStat = res.getInt("os_stat");
+            String defCat = res.getString("ds_cat");
+            String defName = res.getString("ds_name");
+            String defStat = res.getString("ds_stat");
+
             System.out.println("Type: " + type);
-            System.out.println("Name: " + name);
             System.out.println("Health: " + health);
             System.out.println("Strength: " + strength);
-            System.out.println("Off stuff: " + offStuff);
-            System.out.println("Def stuff: " + defStuff);
+            System.out.println();
+            System.out.println("OFF STUFF:\nCAT: " + offCat + ", NAME: " + offName + ", STAT: " + offStat);
+            System.out.println("DEF STUFF:\nCAT: " + defCat + ", NAME: " + defName + ", STAT: " + defStat);
+            System.out.println();
             System.out.println();
         }
 
         db.close();
     }
 
-    public void createHero(Connection db, String type, String name) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
-        classes.add(Warrior.class);
-        classes.add(Wizard.class);
+    public void getPlayer(Connection db, int player_id) throws SQLException {
+        System.out.println();
+        System.out.println("______");
+        System.out.println("PLAYER");
+        System.out.println("‾‾‾‾‾‾");
+        System.out.println();
 
-        String req = "INSERT INTO hero (type, name, health, strength, off_stuff, def_stuff) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "SELECT " +
+                "p.name, " +
+                "p.type, " +
+                "p.health, " +
+                "p.strength," +
+                "os.category AS os_cat, " +
+                "os.name AS os_name, " +
+                "os.stat AS os_stat, " +
+                "ds.category AS ds_cat, " +
+                "ds.name AS ds_name, " +
+                "ds.stat AS ds_stat " +
+                "FROM " +
+                "player p " +
+                "JOIN " +
+                "off_stuff os ON p.off_stuff_id = os.id " +
+                "JOIN " +
+                "def_stuff ds ON p.def_stuff_id = ds.id " +
+                "WHERE " +
+                "p.id = " + player_id;
 
-        for (Class<?> item : classes) {
-            Object itemInstance = item.getDeclaredConstructor().newInstance();
-            Object job = item.getMethod("getPlayerJob").invoke(itemInstance);
-            Object health = item.getMethod("getHealth").invoke(itemInstance);
-            Object strength = item.getMethod("getStrength").invoke(itemInstance);
+        ResultSet res = db.prepareStatement(req).executeQuery();
 
-            Object defStuff = item.getMethod("getDefensiveStuff").invoke(itemInstance);
-            Object defStuffName = defStuff.getClass().getMethod("getName").invoke(defStuff);
+        while (res.next()) {
+            String name = res.getString("name").toLowerCase();
+            String type = res.getString("type").toLowerCase();
+            int health = res.getInt("health");
+            int strength = res.getInt("strength");
+            String offCat = res.getString("os_cat");
+            String offName = res.getString("os_name");
+            int offStat = res.getInt("os_stat");
+            String defCat = res.getString("ds_cat");
+            String defName = res.getString("ds_name");
+            String defStat = res.getString("ds_stat");
 
-            Object offStuff = item.getMethod("getOffensiveStuff").invoke(itemInstance);
-            Object offStuffName = offStuff.getClass().getMethod("getName").invoke(offStuff);
-
-            if (type.toUpperCase().equals(job)) {
-                PreparedStatement statement = db.prepareStatement(req);
-
-                statement.setString(1, (String) job);
-                statement.setString(2, name.toUpperCase());
-                statement.setInt(3, (Integer) health);
-                statement.setInt(4, (Integer) strength);
-                statement.setString(5, (String) offStuffName);
-                statement.setString(6, (String) defStuffName);
-
-                int rowsInserted = statement.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Successful insertion!");
-                } else {
-                    System.out.println("no line inserted");
-                }
-
-                break;
-            }
+            System.out.println("Name: " + name);
+            System.out.println("Type: " + type);
+            System.out.println("Health: " + health);
+            System.out.println("Strength: " + strength);
+            System.out.println();
+            System.out.println("OFF STUFF:\nCAT: " + offCat + ", NAME: " + offName + ", STAT: " + offStat);
+            System.out.println("DEF STUFF:\nCAT: " + defCat + ", NAME: " + defName + ", STAT: " + defStat);
+            System.out.println();
+            System.out.println();
         }
 
         db.close();
     }
 
-    public void editHero(Connection db, int id, String name) throws SQLException {
+    public void setPlayer(Connection db, String name, String type) throws SQLException {
+
+        String req = "INSERT INTO " +
+                "hero (name, type, health, strength, off_stuff_id, def_stuff_id) " +
+                "VALUES (" + name + ", " + type + ", ?, ?, ?, ?)";
+
+        db.close();
+    }
+
+    public void editPlayer(Connection db, int id, String name) throws SQLException {
         String req = "UPDATE hero SET name = ? WHERE id = ?";
 
         PreparedStatement statement = db.prepareStatement(req);
-        statement.setString(1, (String) name.toUpperCase());
+        statement.setString(1, (String) name.toLowerCase());
         statement.setInt(2, (Integer) id);
 
         int rowsUpdated = statement.executeUpdate();
@@ -129,5 +167,12 @@ public class DB {
         }
 
         db.close();
+    }
+
+    public void createGameboard(Connection db, int cellsCount) {
+        // si plateau existe déjà
+        // réinitialiser le plateau (id increament to 0)
+        // sinon
+        // créer nb de case = cellsCount
     }
 }

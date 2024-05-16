@@ -18,11 +18,12 @@ public class Main {
         Dice dice = new DefaultDice();
 
         DB db = new DB();
-//        db.getHero(db.getConnection());
-//        db.createHero(db.getConnection(), "WARRIOR", "FLORENT");
-//        db.editHero(db.getConnection(), 9, "new ME");
+//        db.getHeroes(db.getConnection());
+        db.getPlayer(db.getConnection(), 2);
+//        db.setPlayer(db.getConnection(), "warrior", "florent");
+//        db.editPlayer(db.getConnection(), 9, "new me");
 //        db.editHealth(db.getConnection(), 9, 50);
-
+//        db.createGameboard(db.getConnection(), 64);
 
 
 //        while(true) {
