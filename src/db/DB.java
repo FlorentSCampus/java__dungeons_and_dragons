@@ -4,9 +4,10 @@ import src.player.job.Warrior;
 import src.player.job.Wizard;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,33 +19,40 @@ public class DB {
         this.config = new Config();
     }
 
-    public void getConnection() {
-        System.out.println(config.getURL());
-        try (Connection connection = DriverManager.getConnection(config.getURL(), config.getUSERNAME(), config.getPWD())) {
-            System.out.println("Connexion réussie à la base de données MySQL!");
-            // Vous pouvez maintenant utiliser la connexion pour exécuter des requêtes SQL
-            // Par exemple :
-            // Statement statement = connection.createStatement();
-            // ResultSet resultSet = statement.executeQuery("SELECT * FROM ma_table");
-            // Traitez les résultats...
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection(config.getURL(), config.getUSERNAME(), config.getPWD());
         } catch (SQLException e) {
-            System.out.println("La connexion à la base de données a échoué!");
+            System.out.println("Failed connection to database!");
         }
+
+        return null;
     }
 
-    public void getHero() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        classes.add(Warrior.class);
-        classes.add(Wizard.class);
+    public void getHero(Connection db) throws SQLException {
+        try {
+            Statement statement = db.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM hero");
 
-        for(Class<?> item : classes) {
-            Object itemInstance = item.getDeclaredConstructor().newInstance();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String type = resultSet.getString("type");
+                String name = resultSet.getString("name");
+                int health = resultSet.getInt("health");
+                int strength = resultSet.getInt("strength");
+                String offStuff = resultSet.getString("off_stuff");
+                String defStuff = resultSet.getString("def_stuff");
 
-            Object job = item.getMethod("getPlayerJob").invoke(itemInstance);
-            Object health = item.getMethod("getHealth").invoke(itemInstance);
-            Object strength = item.getMethod("getStrength").invoke(itemInstance);
-
-            System.out.println(job + "\n" + health + "\n" + strength);
-            System.out.println();
+                System.out.println("Id: " + id);
+                System.out.println("Type: " + type);
+                System.out.println("Name: " + name);
+                System.out.println("Health: " + health);
+                System.out.println("Strength: " + strength);
+                System.out.println("Off stuff: " + offStuff);
+                System.out.println("Def stuff: " + defStuff);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed connection to database!");
         }
     }
 
@@ -59,4 +67,24 @@ public class DB {
     public void editHealth(int health) {
 
     }
+
+//
+//
+//
+
+//    public void getHero() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+//        classes.add(Warrior.class);
+//        classes.add(Wizard.class);
+//
+//        for(Class<?> item : classes) {
+//            Object itemInstance = item.getDeclaredConstructor().newInstance();
+//
+//            Object job = item.getMethod("getPlayerJob").invoke(itemInstance);
+//            Object health = item.getMethod("getHealth").invoke(itemInstance);
+//            Object strength = item.getMethod("getStrength").invoke(itemInstance);
+//
+//            System.out.println(job + "\n" + health + "\n" + strength);
+//            System.out.println();
+//        }
+//    }
 }
