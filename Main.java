@@ -18,7 +18,10 @@ public class Main {
         Dice dice = new DefaultDice();
 
         DB db = new DB();
-        db.getHero(db.getConnection());
+//        db.getHero(db.getConnection());
+        db.createHero(db.getConnection(), "warrior", "florent");
+
+
 
 //        while(true) {
 //            Game game = new Game(dice, menu);
