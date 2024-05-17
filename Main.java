@@ -1,5 +1,6 @@
 import src.Game;
 
+import src.board.Board;
 import src.board.dice.DefaultDice;
 import src.board.dice.Dice;
 import src.board.dice.FakeDice;
@@ -18,13 +19,25 @@ public class Main {
         Dice dice = new DefaultDice();
 
         DB db = new DB();
-//        db.getHeroes(db.getConnection());
-//        db.getPlayer(db.getConnection(), "000");
-        db.setPlayer(db.getConnection(), "florent", "warrior");
-//        db.editPlayer(db.getConnection(), 9, "new me");
-//        db.editHealth(db.getConnection(), 9, 50);
-//        db.createGameboard(db.getConnection(), 64);
+//        db.getHeroes();
+//        db.getPlayer("10889ce0-f590-4dce-8efd-5c9c4fe09a8b");
+//        db.setPlayer("azerty", "wizard");
+//        System.out.println(db.getName("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        db.setName("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", "florent");
+//        System.out.println(db.getType("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        db.setType("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", "warrior");
+//        System.out.println(db.getHealth("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        db.setHealth("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", 9999);
+//        System.out.println(db.getStrength("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        db.setStrength("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", 9999);
 
+        db.setCells();
+//        db.setGameboard("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", board.getDbCells());
+//        System.out.println(db.getCells());
+
+
+
+//        System.out.println(db.getUuid());
 
 //        while(true) {
 //            Game game = new Game(dice, menu);

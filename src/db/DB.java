@@ -6,7 +6,9 @@ import java.util.*;
 public class DB {
     Config config;
 
-    public DB() {
+    private List<?> cells;
+
+    public DB () {
         this.config = new Config();
     }
 
@@ -262,11 +264,109 @@ public class DB {
     }
 
 
+    public void setCells() throws SQLException {
+        Random random = new Random();
+        List<String> uuids = new ArrayList<>();
 
-    public void setGameboard(Connection db, int cellsCount) {
-        // si plateau existe déjà
-        // réinitialiser le plateau (id increament to 0)
-        // sinon
-        // créer nb de case = cellsCount
+        String[] reqs = {
+                "SELECT id, name FROM enemy",
+                "SELECT id, name FROM def_stuff",
+                "SELECT id, name FROM off_stuff",
+                "SELECT id, name FROM potion"
+        };
+
+        try (Statement statement = getConnection().createStatement()) {
+            for (String req: reqs) {
+                try(ResultSet resultSet = statement.executeQuery(req)){
+                    while (resultSet.next()) {
+                        // if name == "maxi potion"
+                        // loop x times
+                        uuids.add(resultSet.getString("id"));
+                    }
+                }
+            }
+        }
+
+        System.out.println(uuids);
+
+//
+//        for (int i = 0; i < 10; i++) {
+//            if (i < 2) {
+//                items.add(Fireball.class);
+//                items.add(MaxiPotion.class);
+//            }
+//
+//            if (i < 4) {
+//                items.add(Dragon.class);
+//                items.add(MithrilSword.class);
+//            }
+//
+//            if (i < 5) {
+//                items.add(IronMass.class);
+//                items.add(Lightning.class);
+//            }
+//
+//            if (i < 6) {
+//                items.add(MiniPotion.class);
+//            }
+//
+//            if (i < 10) {
+//                items.add(Goblin.class);
+//                items.add(Necromancer.class);
+//            }
+//        }
+//
+//        Collections.shuffle(items);
+//
+//        for (Class<?> item : items) {
+//            int i;
+//
+//            do {
+//                i = random.nextInt(getSize());
+//            }
+//            while (cells.get(i) != null);
+//            {
+//                Object itemInstance = item.getDeclaredConstructor().newInstance();
+//
+//                cells.set(i, (Cell) itemInstance);
+//            }
+//        }
+//
+//        for (int i = 0; i < cells.size(); i++) {
+//            if (cells.get(i) == null) {
+//                Class<?> itemClass = Class.forName("src.board.cell.EmptyCell");
+//                Constructor<?> constructor = itemClass.getDeclaredConstructor();
+//                Object itemInstance = constructor.newInstance();
+//
+//                cells.set(i, (Cell) itemInstance);
+//            }
+//        }
     }
+
+    public List<?> getCells() {
+        return cells;
+    }
+
+
+
+
+    public void setGameboard(String uuidPlayer, List cells) throws SQLException {
+        UUID uuid = UUID.randomUUID();
+
+        String req = "INSERT INTO   gameboard ('" + uuid + "', '" + cells + "', '" + uuidPlayer + "')";
+
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
+        }
+
+        getConnection().close();
+    }
+
+
+
+//    public UUID getUuid() {
+//        UUID uuid = UUID.randomUUID();
+//
+//        return uuid;
+//    }
 }
