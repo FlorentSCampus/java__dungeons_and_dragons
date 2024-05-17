@@ -20,31 +20,27 @@ public class DB {
         return null;
     }
 
-    public void getHeroes(Connection db) throws SQLException {
+    public void getHeroes() throws SQLException {
         System.out.println();
         System.out.println("______");
         System.out.println("HEROES");
         System.out.println("‾‾‾‾‾‾");
         System.out.println();
 
-        String req = "SELECT " +
-                "h.type, " +
-                "h.health, " +
-                "h.strength," +
-                "os.category AS os_cat, " +
-                "os.name AS os_name, " +
-                "os.stat AS os_stat, " +
-                "ds.category AS ds_cat, " +
-                "ds.name AS ds_name, " +
-                "ds.stat AS ds_stat " +
-                "FROM " +
-                "hero h " +
-                "JOIN " +
-                "off_stuff os ON h.off_stuff_id = os.id " +
-                "JOIN " +
-                "def_stuff ds ON h.def_stuff_id = ds.id";
+        String req = "SELECT    h.type, " +
+                "               h.health, " +
+                "               h.strength," +
+                "               os.category AS os_cat, " +
+                "               os.name AS os_name, " +
+                "               os.stat AS os_stat, " +
+                "               ds.category AS ds_cat, " +
+                "               ds.name AS ds_name, " +
+                "               ds.stat AS ds_stat " +
+                "FROM           hero h " +
+                "JOIN           off_stuff os ON h.off_stuff_id = os.id " +
+                "JOIN           def_stuff ds ON h.def_stuff_id = ds.id";
 
-        ResultSet res = db.prepareStatement(req).executeQuery();
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
 
         while (res.next()) {
             String type = res.getString("type").toLowerCase();
@@ -67,37 +63,32 @@ public class DB {
             System.out.println();
         }
 
-        db.close();
+        getConnection().close();
     }
 
-    public void getPlayer(Connection db, String player_id) throws SQLException {
+    public void getPlayer(String uuid) throws SQLException {
         System.out.println();
         System.out.println("______");
         System.out.println("PLAYER");
         System.out.println("‾‾‾‾‾‾");
         System.out.println();
 
-        String req = "SELECT " +
-                "p.name, " +
-                "p.type, " +
-                "p.health, " +
-                "p.strength," +
-                "os.category AS os_cat, " +
-                "os.name AS os_name, " +
-                "os.stat AS os_stat, " +
-                "ds.category AS ds_cat, " +
-                "ds.name AS ds_name, " +
-                "ds.stat AS ds_stat " +
-                "FROM " +
-                "player p " +
-                "JOIN " +
-                "off_stuff os ON p.off_stuff_id = os.id " +
-                "JOIN " +
-                "def_stuff ds ON p.def_stuff_id = ds.id " +
-                "WHERE " +
-                "p.id = " + player_id;
+        String req = "SELECT    p.name, " +
+                "               p.type, " +
+                "               p.health, " +
+                "               p.strength," +
+                "               os.category AS os_cat, " +
+                "               os.name AS os_name, " +
+                "               os.stat AS os_stat, " +
+                "               ds.category AS ds_cat, " +
+                "               ds.name AS ds_name, " +
+                "               ds.stat AS ds_stat " +
+                "FROM           player p " +
+                "JOIN           off_stuff os ON p.off_stuff_id = os.id " +
+                "JOIN           def_stuff ds ON p.def_stuff_id = ds.id " +
+                "WHERE          p.id = '" + uuid + "'";
 
-        ResultSet res = db.prepareStatement(req).executeQuery();
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
 
         while (res.next()) {
             String name = res.getString("name").toLowerCase();
@@ -122,105 +113,157 @@ public class DB {
             System.out.println();
         }
 
-        db.close();
+        getConnection().close();
     }
 
-    public void setPlayer(Connection db, String name, String type) throws SQLException {
+    public void setPlayer(String name, String type) throws SQLException {
         UUID uuid = UUID.randomUUID();
 
-        String req = "INSERT INTO " +
-                "player (" +
-                "id, " +
-                "name, " +
-                "type, " +
-                "health, " +
-                "strength, " +
-                "off_stuff_id, " +
-                "def_stuff_id" +
-                ") " +
-                "SELECT '" +
-                uuid + "', '" +
-                name + "', " +
-                "type, " +
-                "health, " +
-                "strength, " +
-                "off_stuff_id, " +
-                "def_stuff_id " +
-                "FROM " +
-                "hero " +
-                "WHERE " +
-                "type = '" + type + "'";
+        String req = "INSERT INTO   player (id, name, type, health, strength, off_stuff_id, def_stuff_id) " +
+                "SELECT '" +        uuid + "', '" +
+                                    name + "', " +
+                "                   type, " +
+                "                   health, " +
+                "                   strength, " +
+                "                   off_stuff_id, " +
+                "                   def_stuff_id " +
+                "FROM               hero " +
+                "WHERE              type = '" + type + "'";
 
-        if (heroTypeExists(db, type)) {
-            try (Statement statement = db.createStatement()) {
-                statement.executeUpdate(req);
-            }
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
         }
 
-        db.close();
+        getConnection().close();
     }
 
-    public boolean heroTypeExists(Connection db, String type) {
-        String req = "SELECT " +
-                "COUNT(*) " +
-                "FROM " +
-                "hero " +
-                "WHERE " +
-                "type = '" + type + "'";
+    public String getName(String uuid) throws SQLException {
+        String req = "SELECT    name " +
+                "FROM           player " +
+                "WHERE          id = '" + uuid + "'";
 
-        try (Statement statement = db.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(req)) {
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("'" + type + "' type not found in hero table");
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
+
+        while (res.next()) {
+            getConnection().close();
+
+            return res.getString("name").toLowerCase();
         }
 
-        return false;
+        getConnection().close();
+
+        return null;
     }
 
+    public void setName(String uuid, String name) throws SQLException {
+        String req = "UPDATE    player " +
+                "SET            name = '" + name + "' " +
+                "WHERE          id = '" + uuid + "'";
 
-
-
-
-    
-    public void editPlayer(Connection db, int id, String name) throws SQLException {
-        String req = "UPDATE hero SET name = ? WHERE id = ?";
-
-        PreparedStatement statement = db.prepareStatement(req);
-        statement.setString(1, (String) name.toLowerCase());
-        statement.setInt(2, (Integer) id);
-
-        int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Successful update!");
-        } else {
-            System.out.println("no updated");
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
         }
 
-        db.close();
+        getConnection().close();
     }
 
-    public void editHealth(Connection db, int id, int health) throws SQLException {
-        String req = "UPDATE hero SET health = ? WHERE id = ?";
+    public String getType(String uuid) throws SQLException {
+        String req = "SELECT    type " +
+                "FROM           player " +
+                "WHERE          id = '" + uuid + "'";
 
-        PreparedStatement statement = db.prepareStatement(req);
-        statement.setInt(1, (Integer) health);
-        statement.setInt(2, (Integer) id);
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
 
-        int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Successful update!");
-        } else {
-            System.out.println("no updated");
+        while (res.next()) {
+            getConnection().close();
+
+            return res.getString("type").toLowerCase();
         }
 
-        db.close();
+        getConnection().close();
+
+        return null;
     }
 
-    public void createGameboard(Connection db, int cellsCount) {
+    public void setType(String uuid, String type) throws SQLException {
+        String req = "UPDATE    player " +
+                "SET            type = (SELECT type FROM hero WHERE type = '" + type + "'), " +
+                "               health = (SELECT health FROM hero WHERE type = '" + type + "'), " +
+                "               strength = (SELECT strength FROM hero WHERE type = '" + type + "'), " +
+                "               off_stuff_id = (SELECT off_stuff_id FROM hero WHERE type = '" + type + "'), " +
+                "               def_stuff_id = (SELECT def_stuff_id FROM hero WHERE type = '" + type + "') " +
+                "WHERE          id = '" + uuid + "'";
+
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
+        }
+
+        getConnection().close();
+    }
+
+    public String getHealth(String uuid) throws SQLException {
+        String req = "SELECT    health " +
+                "FROM           player " +
+                "WHERE          id = '" + uuid + "'";
+
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
+
+        while (res.next()) {
+            getConnection().close();
+
+            return res.getString("health").toLowerCase();
+        }
+
+        getConnection().close();
+
+        return null;
+    }
+
+    public void setHealth(String uuid, int health) throws SQLException {
+        String req = "UPDATE    player " +
+                "SET            health = '" + health + "'" +
+                "WHERE          id = '" + uuid + "'";
+
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
+        }
+
+        getConnection().close();
+    }
+
+    public String getStrength(String uuid) throws SQLException {
+        String req = "SELECT    strength " +
+                "FROM           player " +
+                "WHERE          id = '" + uuid + "'";
+
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
+
+        while (res.next()) {
+            getConnection().close();
+
+            return res.getString("strength").toLowerCase();
+        }
+
+        getConnection().close();
+
+        return null;
+    }
+
+    public void setStrength(String uuid, int strength) throws SQLException {
+        String req = "UPDATE    player " +
+                "SET            strength = '" + strength + "'" +
+                "WHERE          id = '" + uuid + "'";
+
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(req);
+        }
+
+        getConnection().close();
+    }
+
+
+
+    public void setGameboard(Connection db, int cellsCount) {
         // si plateau existe déjà
         // réinitialiser le plateau (id increament to 0)
         // sinon
