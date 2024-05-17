@@ -1,12 +1,11 @@
 package src.db;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DB {
     Config config;
-    
+
     public DB() {
         this.config = new Config();
     }
@@ -71,7 +70,7 @@ public class DB {
         db.close();
     }
 
-    public void getPlayer(Connection db, int player_id) throws SQLException {
+    public void getPlayer(Connection db, String player_id) throws SQLException {
         System.out.println();
         System.out.println("______");
         System.out.println("PLAYER");
@@ -127,14 +126,66 @@ public class DB {
     }
 
     public void setPlayer(Connection db, String name, String type) throws SQLException {
+        UUID uuid = UUID.randomUUID();
 
         String req = "INSERT INTO " +
-                "hero (name, type, health, strength, off_stuff_id, def_stuff_id) " +
-                "VALUES (" + name + ", " + type + ", ?, ?, ?, ?)";
+                "player (" +
+                "id, " +
+                "name, " +
+                "type, " +
+                "health, " +
+                "strength, " +
+                "off_stuff_id, " +
+                "def_stuff_id" +
+                ") " +
+                "SELECT '" +
+                uuid + "', '" +
+                name + "', " +
+                "type, " +
+                "health, " +
+                "strength, " +
+                "off_stuff_id, " +
+                "def_stuff_id " +
+                "FROM " +
+                "hero " +
+                "WHERE " +
+                "type = '" + type + "'";
+
+        if (heroTypeExists(db, type)) {
+            try (Statement statement = db.createStatement()) {
+                statement.executeUpdate(req);
+            }
+        }
 
         db.close();
     }
 
+    public boolean heroTypeExists(Connection db, String type) {
+        String req = "SELECT " +
+                "COUNT(*) " +
+                "FROM " +
+                "hero " +
+                "WHERE " +
+                "type = '" + type + "'";
+
+        try (Statement statement = db.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(req)) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("'" + type + "' type not found in hero table");
+        }
+
+        return false;
+    }
+
+
+
+
+
+    
     public void editPlayer(Connection db, int id, String name) throws SQLException {
         String req = "UPDATE hero SET name = ? WHERE id = ?";
 
