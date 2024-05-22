@@ -338,4 +338,26 @@ public class DB {
 
         getConnection().close();
     }
+
+    public String[] getGameboardPlayer(String playerUuid) throws SQLException {
+        String req = "SELECT    cells " +
+                "FROM           gameboard " +
+                "WHERE          player_id = '" + playerUuid + "'";
+
+        ResultSet res = getConnection().prepareStatement(req).executeQuery();
+
+        while (res.next()) {
+            getConnection().close();
+
+            Gson gson = new Gson();
+            String json = res.getString("cells");
+            String[] cells = gson.fromJson(json, String[].class);
+
+            return cells;
+        }
+
+        getConnection().close();
+
+        return null;
+    }
 }
