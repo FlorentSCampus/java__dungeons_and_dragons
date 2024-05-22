@@ -6,16 +6,16 @@ import java.sql.*;
 import java.util.*;
 
 public class DB {
-    Config config;
+    ConfigForTest config;
 
     private List<String> cells;
 
     public DB() {
-        this.config = new Config();
+        this.config = new ConfigForTest();
     }
 
     public DB(int cellsCount) {
-        this.config = new Config();
+        this.config = new ConfigForTest();
         this.cells = new ArrayList<>(Collections.nCopies(cellsCount, null));
     }
 
