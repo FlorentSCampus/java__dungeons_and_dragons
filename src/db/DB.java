@@ -311,7 +311,7 @@ public class DB {
         return cells;
     }
 
-    public void setGameboard(String playerUuid, List<String> cells) throws SQLException {
+    public void setGameboardPlayer(String playerUuid, List<String> cells) throws SQLException {
         UUID uuid = UUID.randomUUID();
 
         Gson gson = new Gson();
@@ -326,8 +326,8 @@ public class DB {
 
         getConnection().close();
     }
-    
-    public void updateGameboard(String playerUuid, List<String> cells) throws SQLException {
+
+    public void updateGameboardPlayer(String playerUuid, List<String> cells) throws SQLException {
         String req = "UPDATE    gameboard " +
                 "SET            cells = '" + cells + "' " +
                 "WHERE          player_id = '" + playerUuid + "'";
@@ -338,5 +338,4 @@ public class DB {
 
         getConnection().close();
     }
-
 }
