@@ -274,10 +274,10 @@ public class DB {
         List<String> uuids = new ArrayList<>();
 
         String[] reqs = {
-                "SELECT id, qty, name FROM enemy",
-                "SELECT id, qty, name FROM def_stuff",
-                "SELECT id, qty, name FROM off_stuff",
-                "SELECT id, qty, name FROM potion"
+                "SELECT id, qty FROM enemy",
+                "SELECT id, qty FROM def_stuff",
+                "SELECT id, qty FROM off_stuff",
+                "SELECT id, qty FROM potion"
         };
 
         try (Statement statement = getConnection().createStatement()) {
