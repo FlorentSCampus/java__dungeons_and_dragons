@@ -360,4 +360,56 @@ public class DB {
 
         return null;
     }
+
+    public void getGameboardItems(String[] cells) throws SQLException {
+        String req = "SELECT    id, name " +
+                "FROM           enemy " +
+                "UNION ALL " +
+                "SELECT         id, name " +
+                "FROM           off_stuff " +
+                "UNION ALL " +
+                "SELECT         id, name " +
+                "FROM           potion";
+
+        try (Statement statement = getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            ResultSet res = statement.executeQuery(req);
+
+            for (String cell : cells) {
+                while (res.next()) {
+                    if(cell == null) {
+                        String empty = cell;
+                        System.out.println(empty);
+                        res.beforeFirst();
+                        break;
+                    }
+
+                    if (res.getString("id").equals(cell)) {
+                        System.out.println(res.getString("name"));
+                        res.beforeFirst();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void test() throws SQLException {
+//        getHeroes();
+//        getPlayer("10889ce0-f590-4dce-8efd-5c9c4fe09a8b");
+//        setPlayer("azerty", "wizard");
+//        System.out.println(getName("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        setName("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", "florent");
+//        System.out.println(getType("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        setType("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", "warrior");
+//        System.out.println(getHealth("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        setHealth("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", 9999);
+//        System.out.println(getStrength("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+//        setStrength("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", 9999);
+//
+//        setCells();
+//        setGameboardPlayer("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", getCells());
+//        updateGameboardPlayer("10889ce0-f590-4dce-8efd-5c9c4fe09a8b", getCells());
+
+        getGameboardItems(getGameboardPlayer("10889ce0-f590-4dce-8efd-5c9c4fe09a8b"));
+    }
 }
