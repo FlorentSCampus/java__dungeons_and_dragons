@@ -177,12 +177,24 @@ classDiagram
     Stuff <|-- DefStuff : extends
     Stuff <|-- OffStuff : extends
 ```
+<br><br><br><br><br>
 
 ``` mermaid
 ---
 title: Use Case Diagram
 ---
-flowchart TB
+sequenceDiagram
 
-
+Game ->> GameMenu : 
+GameMenu ->> rollDice() : throw dice
+rollDice() -->> Game : true
+Game ->> GameMenu : 
+GameMenu ->> isWon() : 
+isWin() ->> Game : "you won !"
+Game ->> GameMenu : 
+GameMenu ->> gameStat() : 
+GameMenu ->> playerStat() : 
+GameMenu ->> displayCell() : 
+GameMenu ->> battlePhase() : 
+GameMenu ->> isGameOver() : 
 ```
